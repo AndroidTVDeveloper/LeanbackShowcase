@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
        ~ Copyright (C) 2017 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,8 +15,10 @@
   -->
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/remove_program"
-          android:title="@string/remove_program" />
-    <item android:id="@+id/another_option"
-          android:title="@string/another_option" />
+    <item
+        android:id="@+id/remove_program"
+        android:title="@string/remove_program" />
+    <item
+        android:id="@+id/another_option"
+        android:title="@string/another_option" />
 </menu>

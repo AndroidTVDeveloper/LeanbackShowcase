@@ -15,9 +15,8 @@
 -->
 
 
-<merge
-xmlns:android="http://schemas.android.com/apk/res/android"
-    >
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/details_fragment"
         android:name="androidx.leanback.leanbackshowcase.app.room.controller.detail.LiveDataDetailViewWithVideoBackgroundFragment"
@@ -25,39 +24,41 @@ xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_height="wrap_content" />
 
     <TextView
+        android:id="@+id/no_internet_detail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dip"
         android:layout_gravity="center_horizontal|bottom"
-        android:id="@+id/no_internet_detail"
-        android:visibility="gone"
+        android:layout_marginBottom="20dip"
+        android:background="#AA000000"
         android:padding="12dip"
 
-        android:background="#AA000000"
+        android:text="Offline Detail View"
         android:textColor="#ffffffff"
 
-        android:text="Offline Detail View" />
-        <ProgressBar
-            android:id="@+id/renting_progressbar"
-            style="?android:attr/progressBarStyleLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal|center_vertical"
-            android:layout_marginBottom="20dip"
-            android:layout_centerHorizontal="true"
-            android:visibility="gone" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dip"
-            android:layout_gravity="center_horizontal|center_vertical"
-            android:id="@+id/loading_renting"
-            android:visibility="gone"
-            android:padding="12dip"
+        android:visibility="gone" />
 
-            android:background="#AA000000"
-            android:textColor="#ffffffff"
+    <ProgressBar
+        android:id="@+id/renting_progressbar"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal|center_vertical"
+        android:layout_marginBottom="20dip"
+        android:visibility="gone" />
 
-            android:text="Renting" />
+    <TextView
+        android:id="@+id/loading_renting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|center_vertical"
+        android:layout_marginBottom="20dip"
+        android:background="#AA000000"
+        android:padding="12dip"
+
+        android:text="Renting"
+        android:textColor="#ffffffff"
+
+        android:visibility="gone" />
 
 </merge>

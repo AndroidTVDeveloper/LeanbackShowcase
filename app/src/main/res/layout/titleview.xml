@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
      Copyright (C) 2019 The Android Open Source Project
 
      Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,9 +13,8 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<androidx.leanback.leanbackshowcase.app.page.CustomTitleView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/browse_title_group"
-        android:padding="16dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+<androidx.leanback.leanbackshowcase.app.page.CustomTitleView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/browse_title_group"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp" />

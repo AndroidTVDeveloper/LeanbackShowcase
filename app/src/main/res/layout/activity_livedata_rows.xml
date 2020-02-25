@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2017 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,9 +14,8 @@
   ~ limitations under the License
   -->
 
-<merge
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    >
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/main_livedata_fragment"
@@ -27,18 +25,19 @@
         tools:context=".app.room.controller.overview.LiveDataRowsActivity"
         tools:deviceIds="tv"
         tools:ignore="MergeRootFrame" />
+
     <TextView
+        android:id="@+id/no_internet"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dip"
         android:layout_gravity="center_horizontal|bottom"
-        android:id="@+id/no_internet"
-        android:visibility="gone"
+        android:layout_marginBottom="20dip"
+        android:background="#AA000000"
         android:padding="12dip"
 
-        android:background="#AA000000"
+        android:text="Offline Browsing"
         android:textColor="#ffffffff"
 
-        android:text="Offline Browsing" />
+        android:visibility="gone" />
 
 </merge>

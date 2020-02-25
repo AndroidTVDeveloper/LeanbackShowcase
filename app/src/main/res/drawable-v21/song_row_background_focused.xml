@@ -6,11 +6,11 @@
     </item>
     <item>
         <ripple xmlns:android="http://schemas.android.com/apk/res/android"
-                android:color="?android:attr/colorControlHighlight">
+            android:color="?android:attr/colorControlHighlight">
             <item android:id="@android:id/mask">
                 <shape android:shape="rectangle">
-                    <corners android:radius="2dp"/>
-                    <solid android:color="#FFFFFF"/>
+                    <corners android:radius="2dp" />
+                    <solid android:color="#FFFFFF" />
                 </shape>
             </item>
 

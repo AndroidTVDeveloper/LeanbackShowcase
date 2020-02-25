@@ -15,20 +15,20 @@
 -->
 
 <!--<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent">-->
-    <!--<VideoView-->
-        <!--android:id="@+id/videoView"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:layout_gravity="center"-->
-        <!--android:focusable="false"-->
-        <!--android:focusableInTouchMode="false"/>-->
+<!--android:layout_width="match_parent"-->
+<!--android:layout_height="match_parent">-->
+<!--<VideoView-->
+<!--android:id="@+id/videoView"-->
+<!--android:layout_width="match_parent"-->
+<!--android:layout_height="match_parent"-->
+<!--android:layout_gravity="center"-->
+<!--android:focusable="false"-->
+<!--android:focusableInTouchMode="false"/>-->
 <!--</FrameLayout>-->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:id="@+id/videoFragment">
+    android:id="@+id/videoFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
 </RelativeLayout>

@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
      Copyright (C) 2015 The Android Open Source Project
 
      Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,21 +13,20 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<androidx.leanback.widget.NonOverlappingLinearLayout
+<androidx.leanback.widget.NonOverlappingLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="?attr/guidedActionItemContainerStyle"
-    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <ProgressBar
         android:id="@+id/progressBar"
         style="?android:attr/progressBarStyle"
-        android:indeterminateTintMode="src_in"
-        android:indeterminateTint="#FFAB91"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="10dp"
-        android:indeterminate="false"/>
+        android:indeterminate="false"
+        android:indeterminateTint="#FFAB91"
+        android:indeterminateTintMode="src_in" />
 
     <androidx.leanback.widget.NonOverlappingLinearLayout
         android:id="@+id/guidedactions_item_content"
@@ -39,9 +37,9 @@
         <TextView
             android:id="@+id/guidedactions_item_title"
             style="?attr/guidedActionItemTitleStyle"
-            android:text="Processing..."
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="Processing..." />
 
     </androidx.leanback.widget.NonOverlappingLinearLayout>
 
