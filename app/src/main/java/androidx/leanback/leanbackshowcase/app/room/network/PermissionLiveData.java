@@ -16,8 +16,8 @@
 
 package androidx.leanback.leanbackshowcase.app.room.network;
 
-import androidx.lifecycle.MutableLiveData;
 import androidx.annotation.MainThread;
+import androidx.lifecycle.MutableLiveData;
 
 public class PermissionLiveData {
     private static MutableLiveData<Boolean> sPermissionLiveData;
@@ -25,7 +25,7 @@ public class PermissionLiveData {
     @MainThread
     public static MutableLiveData<Boolean> get() {
         if (sPermissionLiveData == null) {
-            sPermissionLiveData = new MutableLiveData<>() ;
+            sPermissionLiveData = new MutableLiveData<>();
         }
         return sPermissionLiveData;
     }

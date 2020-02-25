@@ -17,10 +17,12 @@
 package androidx.leanback.leanbackshowcase.app.room.di.androidinject;
 
 import android.app.Activity;
+
 import androidx.leanback.leanbackshowcase.app.room.controller.overview.LiveDataRowsActivity;
 import androidx.leanback.leanbackshowcase.app.room.controller.search.SearchActivity;
 import androidx.leanback.leanbackshowcase.app.room.di.androidinjectorannotation.LiveDataOverviewActivitySubcomponent;
 import androidx.leanback.leanbackshowcase.app.room.di.scope.PerActivity;
+
 import dagger.Binds;
 import dagger.Module;
 import dagger.android.ActivityKey;

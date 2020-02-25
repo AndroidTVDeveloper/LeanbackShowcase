@@ -17,10 +17,11 @@ package androidx.leanback.leanbackshowcase.cards.presenters;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import androidx.leanback.leanbackshowcase.R;
-import androidx.leanback.widget.ImageCardView;
 import android.view.View;
 import android.widget.ImageView;
+
+import androidx.leanback.leanbackshowcase.R;
+import androidx.leanback.widget.ImageCardView;
 
 /**
  * This Presenter will display cards which consists of a single icon which will be highlighted by a

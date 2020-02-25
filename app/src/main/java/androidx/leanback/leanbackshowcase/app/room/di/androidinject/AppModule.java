@@ -16,35 +16,38 @@
 package androidx.leanback.leanbackshowcase.app.room.di.androidinject;
 
 import android.app.Application;
-import androidx.room.Room;
+
 import androidx.leanback.leanbackshowcase.app.room.db.AppDatabase;
 import androidx.leanback.leanbackshowcase.app.room.db.dao.CategoryDao;
 import androidx.leanback.leanbackshowcase.app.room.db.dao.VideoDao;
 import androidx.leanback.leanbackshowcase.app.room.di.androidinjectorannotation.LiveDataOverviewActivitySubcomponent;
 import androidx.leanback.leanbackshowcase.app.room.di.viewmodel.ViewModelModule;
-import dagger.Module;
-import dagger.Provides;
+import androidx.room.Room;
+
 import javax.inject.Singleton;
 
+import dagger.Module;
+import dagger.Provides;
 
-@Module(includes= ViewModelModule.class, subcomponents = LiveDataOverviewActivitySubcomponent.class)
+
+@Module(includes = ViewModelModule.class, subcomponents = LiveDataOverviewActivitySubcomponent.class)
 public class AppModule {
 
-  @Singleton
-  @Provides
-  AppDatabase provideAppDatabase(Application app) {
-    return Room.databaseBuilder(app, AppDatabase.class, AppDatabase.DATABASE_NAME).build();
-  }
+    @Singleton
+    @Provides
+    AppDatabase provideAppDatabase(Application app) {
+        return Room.databaseBuilder(app, AppDatabase.class, AppDatabase.DATABASE_NAME).build();
+    }
 
-  @Singleton
-  @Provides
-  CategoryDao provideCategoryDao(AppDatabase db) {
-    return db.categoryDao();
-  }
+    @Singleton
+    @Provides
+    CategoryDao provideCategoryDao(AppDatabase db) {
+        return db.categoryDao();
+    }
 
-  @Singleton
-  @Provides
-  VideoDao provideVideoDao(AppDatabase db) {
-    return db.videoDao();
-  }
+    @Singleton
+    @Provides
+    VideoDao provideVideoDao(AppDatabase db) {
+        return db.videoDao();
+    }
 }

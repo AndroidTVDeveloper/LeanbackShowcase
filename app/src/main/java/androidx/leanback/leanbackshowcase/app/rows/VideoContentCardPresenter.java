@@ -18,11 +18,12 @@ package androidx.leanback.leanbackshowcase.app.rows;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.view.ViewGroup;
+
+import androidx.core.content.ContextCompat;
 import androidx.leanback.leanbackshowcase.R;
 import androidx.leanback.widget.ImageCardView;
 import androidx.leanback.widget.Presenter;
-import androidx.core.content.ContextCompat;
-import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
 
@@ -34,6 +35,14 @@ import com.bumptech.glide.Glide;
 public class VideoContentCardPresenter extends Presenter {
     private static int sSelectedBackgroundColor;
     private static int sDefaultBackgroundColor;
+
+    private static void updateCardBackgroundColor(ImageCardView view, boolean selected) {
+        int color = selected ? sSelectedBackgroundColor : sDefaultBackgroundColor;
+        // Both background colors should be set because the view's background is temporarily visible
+        // during animations.
+        view.setBackgroundColor(color);
+        view.findViewById(R.id.info_field).setBackgroundColor(color);
+    }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent) {
@@ -53,14 +62,6 @@ public class VideoContentCardPresenter extends Presenter {
         cardView.setFocusableInTouchMode(true);
         updateCardBackgroundColor(cardView, false);
         return new ViewHolder(cardView);
-    }
-
-    private static void updateCardBackgroundColor(ImageCardView view, boolean selected) {
-        int color = selected ? sSelectedBackgroundColor : sDefaultBackgroundColor;
-        // Both background colors should be set because the view's background is temporarily visible
-        // during animations.
-        view.setBackgroundColor(color);
-        view.findViewById(R.id.info_field).setBackgroundColor(color);
     }
 
     @Override

@@ -15,11 +15,11 @@
 package androidx.leanback.leanbackshowcase.models;
 
 
+import androidx.leanback.leanbackshowcase.R;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
-
-import androidx.leanback.leanbackshowcase.R;
 
 /**
  * The video card data structure used to hold the fields of each video card fetched from the
@@ -27,9 +27,12 @@ import androidx.leanback.leanbackshowcase.R;
  */
 public class VideoCard extends Card {
 
-    @SerializedName("sources") private List<String> mVideoSources = null;
-    @SerializedName("background") private String mBackgroundUrl = "";
-    @SerializedName("studio") private String mStudio = "";
+    @SerializedName("sources")
+    private List<String> mVideoSources = null;
+    @SerializedName("background")
+    private String mBackgroundUrl = "";
+    @SerializedName("studio")
+    private String mStudio = "";
 
     public VideoCard() {
         super();

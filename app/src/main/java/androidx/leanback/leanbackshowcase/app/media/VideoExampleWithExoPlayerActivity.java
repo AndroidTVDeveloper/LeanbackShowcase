@@ -20,8 +20,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import androidx.leanback.leanbackshowcase.R;
+
 import androidx.core.os.BuildCompat;
+import androidx.leanback.leanbackshowcase.R;
 
 /**
  * Activity that hosts VideoConsumptionExampleWithExoPlayerFragment.
@@ -29,6 +30,12 @@ import androidx.core.os.BuildCompat;
 public class VideoExampleWithExoPlayerActivity extends Activity {
 
     public static final String TAG = "VideoExampleWithExoPlayerActivity";
+
+    public static boolean supportsPictureInPicture(Context context) {
+        return BuildCompat.isAtLeastN() &&
+                context.getPackageManager().hasSystemFeature(
+                        PackageManager.FEATURE_PICTURE_IN_PICTURE);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,12 +57,6 @@ public class VideoExampleWithExoPlayerActivity extends Activity {
         // to update this intent when for example, user clicks on another video when the currently
         // playing video is in PIP mode, and a new video needs to be started.
         setIntent(intent);
-    }
-
-    public static boolean supportsPictureInPicture(Context context) {
-        return BuildCompat.isAtLeastN() &&
-                context.getPackageManager().hasSystemFeature(
-                        PackageManager.FEATURE_PICTURE_IN_PICTURE);
     }
 
 }

@@ -17,6 +17,7 @@
 package androidx.leanback.leanbackshowcase.app.room.di.androidinject;
 
 import android.app.Application;
+
 import androidx.leanback.leanbackshowcase.app.room.controller.app.SampleApplication;
 
 import javax.inject.Singleton;
@@ -27,11 +28,13 @@ import dagger.android.AndroidInjectionModule;
 
 @Singleton
 @Component(modules = {
-    AndroidInjectionModule.class,
-    AppModule.class,
-    ActivityBuildersModule.class,
+        AndroidInjectionModule.class,
+        AppModule.class,
+        ActivityBuildersModule.class,
 })
 public interface AppComponent {
+    void inject(SampleApplication sampleApplication);
+
     @Component.Builder
     interface Builder {
         @BindsInstance
@@ -39,6 +42,4 @@ public interface AppComponent {
 
         AppComponent build();
     }
-
-    void inject(SampleApplication sampleApplication);
 }

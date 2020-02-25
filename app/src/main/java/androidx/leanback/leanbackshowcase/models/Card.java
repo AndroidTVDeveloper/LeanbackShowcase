@@ -29,18 +29,30 @@ import java.net.URISyntaxException;
  */
 public class Card {
 
-    @SerializedName("title") private String mTitle = "";
-    @SerializedName("description") private String mDescription = "";
-    @SerializedName("extraText") private String mExtraText = "";
-    @SerializedName("card") private String mImageUrl;
-    @SerializedName("footerColor") private String mFooterColor = null;
-    @SerializedName("selectedColor") private String mSelectedColor = null;
-    @SerializedName("localImageResource") private String mLocalImageResource = null;
-    @SerializedName("footerIconLocalImageResource") private String mFooterResource = null;
-    @SerializedName("type") private Card.Type mType;
-    @SerializedName("id") private int mId;
-    @SerializedName("width") private int mWidth;
-    @SerializedName("height") private int mHeight;
+    @SerializedName("title")
+    private String mTitle = "";
+    @SerializedName("description")
+    private String mDescription = "";
+    @SerializedName("extraText")
+    private String mExtraText = "";
+    @SerializedName("card")
+    private String mImageUrl;
+    @SerializedName("footerColor")
+    private String mFooterColor = null;
+    @SerializedName("selectedColor")
+    private String mSelectedColor = null;
+    @SerializedName("localImageResource")
+    private String mLocalImageResource = null;
+    @SerializedName("footerIconLocalImageResource")
+    private String mFooterResource = null;
+    @SerializedName("type")
+    private Card.Type mType;
+    @SerializedName("id")
+    private int mId;
+    @SerializedName("width")
+    private int mWidth;
+    @SerializedName("height")
+    private int mHeight;
 
     public String getTitle() {
         return mTitle;
@@ -66,36 +78,36 @@ public class Card {
         mFooterResource = footerResource;
     }
 
-    public void setType(Type type) {
-        mType = type;
-    }
-
-    public void setId(int id) {
-        mId = id;
+    public int getWidth() {
+        return mWidth;
     }
 
     public void setWidth(int width) {
         mWidth = width;
     }
 
-    public void setHeight(int height) {
-        mHeight = height;
-    }
-
-    public int getWidth() {
-        return mWidth;
-    }
-
     public int getHeight() {
         return mHeight;
+    }
+
+    public void setHeight(int height) {
+        mHeight = height;
     }
 
     public int getId() {
         return mId;
     }
 
+    public void setId(int id) {
+        mId = id;
+    }
+
     public Card.Type getType() {
         return mType;
+    }
+
+    public void setType(Type type) {
+        mType = type;
     }
 
     public String getDescription() {
@@ -129,12 +141,12 @@ public class Card {
         return Color.parseColor(mSelectedColor);
     }
 
-    public String getImageUrl() {
-        return mImageUrl;
-    }
-
     public void setSelectedColor(String selectedColor) {
         mSelectedColor = selectedColor;
+    }
+
+    public String getImageUrl() {
+        return mImageUrl;
     }
 
     public void setImageUrl(String imageUrl) {
@@ -153,7 +165,7 @@ public class Card {
 
     public int getLocalImageResourceId(Context context) {
         return context.getResources().getIdentifier(getLocalImageResourceName(), "drawable",
-                                                    context.getPackageName());
+                context.getPackageName());
     }
 
     public String getLocalImageResourceName() {

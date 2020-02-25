@@ -17,22 +17,23 @@
 
 package androidx.leanback.leanbackshowcase.app.room.db.repo;
 
-import androidx.lifecycle.LiveData;
-import androidx.room.Room;
 import android.os.AsyncTask;
+import android.util.Log;
+
 import androidx.annotation.WorkerThread;
 import androidx.leanback.leanbackshowcase.R;
-import androidx.leanback.leanbackshowcase.app.room.controller.app.SampleApplication;
 import androidx.leanback.leanbackshowcase.app.room.api.VideoDownloadingService;
 import androidx.leanback.leanbackshowcase.app.room.api.VideosWithGoogleTag;
 import androidx.leanback.leanbackshowcase.app.room.config.AppConfiguration;
+import androidx.leanback.leanbackshowcase.app.room.controller.app.SampleApplication;
 import androidx.leanback.leanbackshowcase.app.room.db.AppDatabase;
 import androidx.leanback.leanbackshowcase.app.room.db.dao.CategoryDao;
 import androidx.leanback.leanbackshowcase.app.room.db.dao.VideoDao;
 import androidx.leanback.leanbackshowcase.app.room.db.entity.CategoryEntity;
 import androidx.leanback.leanbackshowcase.app.room.db.entity.VideoEntity;
 import androidx.leanback.leanbackshowcase.utils.Utils;
-import android.util.Log;
+import androidx.lifecycle.LiveData;
+import androidx.room.Room;
 
 import com.google.gson.Gson;
 
@@ -74,83 +75,6 @@ public class VideosRepository {
     private Map<String, LiveData<List<VideoEntity>>> mVideoEntitiesCache;
     private LiveData<List<CategoryEntity>> mCategories;
 
-    public static VideosRepository getVideosRepositoryInstance() {
-        if (sVideosRepository == null) {
-            sVideosRepository = new VideosRepository();
-        }
-        return sVideosRepository;
-    }
-
-    /**
-     * View Model talks to repository through this method to fetch the live data.
-     *
-     * @param category category
-     * @return The list of categories which is wrapped in a live data.
-     */
-    public LiveData<List<VideoEntity>> getVideosInSameCategoryLiveData(String category) {
-
-        // always try to retrive from local cache firstly
-        if (mVideoEntitiesCache.containsKey(category)) {
-            return mVideoEntitiesCache.get(category);
-        }
-        LiveData<List<VideoEntity>> videoEntities = mVideoDao.loadVideoInSameCateogry(category);
-        mVideoEntitiesCache.put(category, videoEntities);
-        return videoEntities;
-    }
-
-    public LiveData<List<CategoryEntity>> getAllCategories() {
-
-        if (mCategories == null) {
-            mCategories = mCategoryDao.loadAllCategories();
-        }
-        return mCategories;
-    }
-
-    public LiveData<List<VideoEntity>> getSearchResult(String query) {
-        return mVideoDao.searchVideos(query);
-    }
-
-    public LiveData<VideoEntity> getVideoById(Long id) {
-        return mVideoDao.loadVideoById(id);
-    }
-
-
-
-    /**
-     * Helper function to access the database and update the video information in the database.
-     *
-     * @param video    video entity
-     * @param category which fields to update
-     * @param value    updated value
-     */
-    @WorkerThread
-    public synchronized void updateDatabase(VideoEntity video, String category, String value) {
-        try {
-            mDb.beginTransaction();
-            switch (category) {
-                case VIDEO:
-                    video.setVideoLocalStorageUrl(value);
-                    break;
-                case BACKGROUND:
-                    video.setVideoBgImageLocalStorageUrl(value);
-                    break;
-                case CARD:
-                    video.setVideoCardImageLocalStorageUrl(value);
-                    break;
-                case STATUS:
-                    video.setStatus(value);
-                    break;
-                case RENTED:
-                    video.setRented(true);
-                    break;
-            }
-            mDb.videoDao().updateVideo(video);
-            mDb.setTransactionSuccessful();
-        } finally {
-            mDb.endTransaction();
-        }
-    }
-
     @Inject
     public VideosRepository() {
         createAndPopulateDatabase();
@@ -159,41 +83,11 @@ public class VideosRepository {
         mVideoEntitiesCache = new HashMap<>();
     }
 
-    private void createAndPopulateDatabase() {
-        mDb = Room.databaseBuilder(SampleApplication.getInstance(),
-                AppDatabase.class, AppDatabase.DATABASE_NAME).build();
-
-        // insert contents into database
-        try {
-            String url =
-                    "https://storage.googleapis.com/android-tv/";
-            initializeDb(mDb, url);
-        } catch (IOException e) {
-            e.printStackTrace();
+    public static VideosRepository getVideosRepositoryInstance() {
+        if (sVideosRepository == null) {
+            sVideosRepository = new VideosRepository();
         }
-    }
-
-    private void initializeDb(AppDatabase db, String url) throws IOException {
-
-        // json data
-        String json;
-
-        if (AppConfiguration.IS_DEBUGGING_VERSION) {
-
-            // when use debugging version, we won't fetch data from network but using local
-            // json file (only contain 4 video entities in 2 categories.)
-            json = Utils.inputStreamToString(SampleApplication
-                    .getInstance()
-                    .getApplicationContext()
-                    .getResources()
-                    .openRawResource(R.raw.live_movie_debug));
-            Gson gson = new Gson();
-            VideosWithGoogleTag videosWithGoogleTag = gson.fromJson(json,
-                    VideosWithGoogleTag.class);
-            populateDatabase(videosWithGoogleTag,db);
-        } else {
-            buildDatabase(db, url);
-        }
+        return sVideosRepository;
     }
 
     /**
@@ -271,6 +165,111 @@ public class VideosRepository {
             each.setRented(false);
             each.setStatus("");
             each.setTrailerVideoUrl("https://storage.googleapis.com/android-tv/Sample%20videos/Google%2B/Google%2B_%20Say%20more%20with%20Hangouts.mp4");
+        }
+    }
+
+    /**
+     * View Model talks to repository through this method to fetch the live data.
+     *
+     * @param category category
+     * @return The list of categories which is wrapped in a live data.
+     */
+    public LiveData<List<VideoEntity>> getVideosInSameCategoryLiveData(String category) {
+
+        // always try to retrive from local cache firstly
+        if (mVideoEntitiesCache.containsKey(category)) {
+            return mVideoEntitiesCache.get(category);
+        }
+        LiveData<List<VideoEntity>> videoEntities = mVideoDao.loadVideoInSameCateogry(category);
+        mVideoEntitiesCache.put(category, videoEntities);
+        return videoEntities;
+    }
+
+    public LiveData<List<CategoryEntity>> getAllCategories() {
+
+        if (mCategories == null) {
+            mCategories = mCategoryDao.loadAllCategories();
+        }
+        return mCategories;
+    }
+
+    public LiveData<List<VideoEntity>> getSearchResult(String query) {
+        return mVideoDao.searchVideos(query);
+    }
+
+    public LiveData<VideoEntity> getVideoById(Long id) {
+        return mVideoDao.loadVideoById(id);
+    }
+
+    /**
+     * Helper function to access the database and update the video information in the database.
+     *
+     * @param video    video entity
+     * @param category which fields to update
+     * @param value    updated value
+     */
+    @WorkerThread
+    public synchronized void updateDatabase(VideoEntity video, String category, String value) {
+        try {
+            mDb.beginTransaction();
+            switch (category) {
+                case VIDEO:
+                    video.setVideoLocalStorageUrl(value);
+                    break;
+                case BACKGROUND:
+                    video.setVideoBgImageLocalStorageUrl(value);
+                    break;
+                case CARD:
+                    video.setVideoCardImageLocalStorageUrl(value);
+                    break;
+                case STATUS:
+                    video.setStatus(value);
+                    break;
+                case RENTED:
+                    video.setRented(true);
+                    break;
+            }
+            mDb.videoDao().updateVideo(video);
+            mDb.setTransactionSuccessful();
+        } finally {
+            mDb.endTransaction();
+        }
+    }
+
+    private void createAndPopulateDatabase() {
+        mDb = Room.databaseBuilder(SampleApplication.getInstance(),
+                AppDatabase.class, AppDatabase.DATABASE_NAME).build();
+
+        // insert contents into database
+        try {
+            String url =
+                    "https://storage.googleapis.com/android-tv/";
+            initializeDb(mDb, url);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void initializeDb(AppDatabase db, String url) throws IOException {
+
+        // json data
+        String json;
+
+        if (AppConfiguration.IS_DEBUGGING_VERSION) {
+
+            // when use debugging version, we won't fetch data from network but using local
+            // json file (only contain 4 video entities in 2 categories.)
+            json = Utils.inputStreamToString(SampleApplication
+                    .getInstance()
+                    .getApplicationContext()
+                    .getResources()
+                    .openRawResource(R.raw.live_movie_debug));
+            Gson gson = new Gson();
+            VideosWithGoogleTag videosWithGoogleTag = gson.fromJson(json,
+                    VideosWithGoogleTag.class);
+            populateDatabase(videosWithGoogleTag, db);
+        } else {
+            buildDatabase(db, url);
         }
     }
 }

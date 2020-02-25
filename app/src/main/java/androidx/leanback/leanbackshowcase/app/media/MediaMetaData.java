@@ -23,8 +23,19 @@ import android.os.Parcelable;
  * MediaPlayerGlue} for passing media item information between app and {@link MediaPlayerGlue}, and
  * between {@link MusicMediaPlayerGlue} and {@link MusicPlaybackService}.
  */
-public class MediaMetaData implements Parcelable{
+public class MediaMetaData implements Parcelable {
 
+    public static final Parcelable.Creator<MediaMetaData> CREATOR = new Creator<MediaMetaData>() {
+        @Override
+        public MediaMetaData createFromParcel(Parcel parcel) {
+            return new MediaMetaData(parcel);
+        }
+
+        @Override
+        public MediaMetaData[] newArray(int size) {
+            return new MediaMetaData[size];
+        }
+    };
     private Uri mMediaSourceUri = null;
     private String mMediaSourcePath;
     private String mMediaTitle;
@@ -48,6 +59,7 @@ public class MediaMetaData implements Parcelable{
     public MediaMetaData() {
     }
 
+
     public MediaMetaData(Parcel in) {
         mMediaSourceUri = in.readParcelable(null);
         mMediaSourcePath = in.readString();
@@ -57,7 +69,6 @@ public class MediaMetaData implements Parcelable{
         mMediaAlbumArtResId = in.readInt();
         mMediaAlbumArtUrl = in.readString();
     }
-
 
     public Uri getMediaSourceUri() {
         return mMediaSourceUri;
@@ -99,7 +110,6 @@ public class MediaMetaData implements Parcelable{
         mMediaAlbumName = mediaAlbumName;
     }
 
-
     public int getMediaAlbumArtResId() {
         return mMediaAlbumArtResId;
     }
@@ -131,17 +141,5 @@ public class MediaMetaData implements Parcelable{
         dest.writeInt(mMediaAlbumArtResId);
         dest.writeString(mMediaAlbumArtUrl);
     }
-
-    public static final Parcelable.Creator<MediaMetaData> CREATOR = new Creator<MediaMetaData>() {
-        @Override
-        public MediaMetaData createFromParcel(Parcel parcel) {
-            return new MediaMetaData(parcel);
-        }
-
-        @Override
-        public MediaMetaData[] newArray(int size) {
-            return new MediaMetaData[size];
-        }
-    };
 
 }

@@ -16,6 +16,7 @@ package androidx.leanback.leanbackshowcase.app;
 
 import android.content.Intent;
 import android.os.Bundle;
+
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.leanback.app.BrowseSupportFragment;
 import androidx.leanback.leanbackshowcase.R;
@@ -47,6 +48,7 @@ import androidx.leanback.widget.Presenter;
 import androidx.leanback.widget.PresenterSelector;
 import androidx.leanback.widget.Row;
 import androidx.leanback.widget.RowPresenter;
+
 import com.google.gson.Gson;
 
 

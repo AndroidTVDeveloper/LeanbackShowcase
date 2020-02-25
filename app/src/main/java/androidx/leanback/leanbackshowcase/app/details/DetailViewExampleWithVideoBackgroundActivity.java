@@ -17,6 +17,7 @@ package androidx.leanback.leanbackshowcase.app.details;
 
 import android.app.Activity;
 import android.os.Bundle;
+
 import androidx.leanback.app.DetailsFragment;
 import androidx.leanback.leanbackshowcase.R;
 

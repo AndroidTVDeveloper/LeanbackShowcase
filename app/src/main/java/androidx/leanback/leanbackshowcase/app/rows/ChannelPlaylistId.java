@@ -22,7 +22,7 @@ package androidx.leanback.leanbackshowcase.app.rows;
  * The reason to have this class is to use channel contents ID (which is unique and won't be
  * changed for each channel) to locate the published ID (which will be changed along with
  * the transaction on content provider)
- *
+ * <p>
  * I.e. For the same channel in different insert operation (add channel to home screen),
  * system will generate different published ID. It is necessary to use the immutable content ID
  * to locate the correct channel and toggle its publish status.

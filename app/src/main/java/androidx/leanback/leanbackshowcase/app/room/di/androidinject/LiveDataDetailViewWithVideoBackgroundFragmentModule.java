@@ -17,7 +17,6 @@
 package androidx.leanback.leanbackshowcase.app.room.di.androidinject;
 
 import androidx.leanback.leanbackshowcase.app.room.controller.detail.LiveDataDetailViewWithVideoBackgroundFragment;
-
 import androidx.leanback.leanbackshowcase.app.room.di.presenter.PresenterModule;
 import androidx.leanback.leanbackshowcase.app.room.di.scope.PerFragment;
 
@@ -31,8 +30,8 @@ import dagger.android.ContributesAndroidInjector;
 @Module
 public abstract class LiveDataDetailViewWithVideoBackgroundFragmentModule {
 
-  @PerFragment
-  @ContributesAndroidInjector (modules = {PresenterModule.class})
-  abstract LiveDataDetailViewWithVideoBackgroundFragment contributeLiveDataDetailViewWithVideoBackgroundFragment();
+    @PerFragment
+    @ContributesAndroidInjector(modules = {PresenterModule.class})
+    abstract LiveDataDetailViewWithVideoBackgroundFragment contributeLiveDataDetailViewWithVideoBackgroundFragment();
 
 }

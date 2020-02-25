@@ -17,12 +17,11 @@
 
 package androidx.leanback.leanbackshowcase.app.room.ui;
 
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
+import android.view.View;
+import android.view.ViewGroup;
+
 import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentActivity;
 import androidx.leanback.leanbackshowcase.app.room.adapter.ListAdapter;
 import androidx.leanback.leanbackshowcase.app.room.db.entity.VideoEntity;
 import androidx.leanback.leanbackshowcase.app.room.viewmodel.VideosInSameCategoryViewModel;
@@ -30,9 +29,11 @@ import androidx.leanback.widget.HorizontalGridView;
 import androidx.leanback.widget.ListRow;
 import androidx.leanback.widget.ListRowPresenter;
 import androidx.leanback.widget.RowPresenter;
-import androidx.fragment.app.FragmentActivity;
-import android.view.View;
-import android.view.ViewGroup;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -54,10 +55,6 @@ public class LiveDataRowPresenter extends ListRowPresenter {
         super();
         mDataLoadedListeners = new ArrayList<>();
         viewModelFactory = factory;
-    }
-
-    public interface DataLoadedListener {
-        void onDataLoaded();
     }
 
     /**
@@ -86,12 +83,11 @@ public class LiveDataRowPresenter extends ListRowPresenter {
                 listRowPresenterViewHolder.getListRowPresenter());
     }
 
-
     @Override
     protected void onBindRowViewHolder(RowPresenter.ViewHolder holder, Object item) {
         super.onBindRowViewHolder(holder, item);
         mRow = (ListRow) item;
-        LiveDataRowPresenterViewHolder vh = (LiveDataRowPresenterViewHolder)holder;
+        LiveDataRowPresenterViewHolder vh = (LiveDataRowPresenterViewHolder) holder;
 
         String category = mRow.getHeaderItem().getName();
 
@@ -146,8 +142,12 @@ public class LiveDataRowPresenter extends ListRowPresenter {
     @Override
     protected void onUnbindRowViewHolder(RowPresenter.ViewHolder holder) {
         super.onUnbindRowViewHolder(holder);
-        LiveDataRowPresenterViewHolder vh = (LiveDataRowPresenterViewHolder)holder;
+        LiveDataRowPresenterViewHolder vh = (LiveDataRowPresenterViewHolder) holder;
         vh.getLiveData().removeObservers(mLifecycleOwner);
+    }
+
+    public interface DataLoadedListener {
+        void onDataLoaded();
     }
 
     /**
@@ -161,13 +161,12 @@ public class LiveDataRowPresenter extends ListRowPresenter {
             super(rootView, gridView, p);
         }
 
+        public final LiveData<List<VideoEntity>> getLiveData() {
+            return mLiveData;
+        }
 
         public void setLiveData(LiveData<List<VideoEntity>> liveData) {
             mLiveData = liveData;
-        }
-
-        public final LiveData<List<VideoEntity>> getLiveData() {
-            return mLiveData;
         }
     }
 }

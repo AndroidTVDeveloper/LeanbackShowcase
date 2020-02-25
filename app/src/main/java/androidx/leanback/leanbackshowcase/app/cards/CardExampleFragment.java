@@ -17,6 +17,11 @@ package androidx.leanback.leanbackshowcase.app.cards;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.Toast;
+
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.leanback.app.BrowseFragment;
 import androidx.leanback.leanbackshowcase.R;
 import androidx.leanback.leanbackshowcase.app.details.DetailViewExampleActivity;
@@ -28,19 +33,15 @@ import androidx.leanback.leanbackshowcase.models.CardRow;
 import androidx.leanback.leanbackshowcase.utils.CardListRow;
 import androidx.leanback.leanbackshowcase.utils.Utils;
 import androidx.leanback.widget.ArrayObjectAdapter;
+import androidx.leanback.widget.DividerRow;
 import androidx.leanback.widget.HeaderItem;
 import androidx.leanback.widget.ImageCardView;
-import androidx.leanback.widget.DividerRow;
-import androidx.leanback.widget.SectionRow;
 import androidx.leanback.widget.OnItemViewClickedListener;
 import androidx.leanback.widget.Presenter;
 import androidx.leanback.widget.PresenterSelector;
 import androidx.leanback.widget.Row;
 import androidx.leanback.widget.RowPresenter;
-import androidx.core.app.ActivityOptionsCompat;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.Toast;
+import androidx.leanback.widget.SectionRow;
 
 import com.google.gson.Gson;
 
@@ -52,7 +53,8 @@ public class CardExampleFragment extends BrowseFragment {
 
     private ArrayObjectAdapter mRowsAdapter;
 
-    @Override public void onActivityCreated(Bundle savedInstanceState) {
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setupUi();
         setupRowAdapter();

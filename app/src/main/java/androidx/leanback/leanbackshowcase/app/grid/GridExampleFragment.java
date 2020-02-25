@@ -16,11 +16,12 @@ package androidx.leanback.leanbackshowcase.app.grid;
 
 import android.os.Bundle;
 import android.os.Handler;
+
 import androidx.leanback.app.VerticalGridFragment;
 import androidx.leanback.leanbackshowcase.R;
-import androidx.leanback.leanbackshowcase.utils.Utils;
-import androidx.leanback.leanbackshowcase.models.CardRow;
 import androidx.leanback.leanbackshowcase.cards.presenters.CardPresenterSelector;
+import androidx.leanback.leanbackshowcase.models.CardRow;
+import androidx.leanback.leanbackshowcase.utils.Utils;
 import androidx.leanback.widget.ArrayObjectAdapter;
 import androidx.leanback.widget.FocusHighlight;
 import androidx.leanback.widget.PresenterSelector;

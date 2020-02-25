@@ -17,27 +17,33 @@
 package androidx.leanback.leanbackshowcase.app.room.network;
 
 import android.app.DownloadManager;
-
-import androidx.lifecycle.LifecycleObserver;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 
+import androidx.lifecycle.LifecycleObserver;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class DownloadCompleteBroadcastReceiver extends BroadcastReceiver
-        implements LifecycleObserver{
+        implements LifecycleObserver {
 
     // singleton design pattern
     private static DownloadCompleteBroadcastReceiver sReceiver;
 
     private List<DownloadCompleteListener> downloadingCompletionListener;
 
-    public interface DownloadCompleteListener {
-        void onDownloadingCompleted(DownloadingTaskDescription desc);
+    private DownloadCompleteBroadcastReceiver() {
+        downloadingCompletionListener = new ArrayList<>();
+    }
+
+    public static DownloadCompleteBroadcastReceiver getInstance() {
+        if (sReceiver == null) {
+            sReceiver = new DownloadCompleteBroadcastReceiver();
+        }
+        return sReceiver;
     }
 
     public void registerListener(DownloadCompleteListener listener) {
@@ -73,20 +79,13 @@ public class DownloadCompleteBroadcastReceiver extends BroadcastReceiver
             // update local storage path
             desc.setStoragePath(path);
 
-            for (final DownloadCompleteListener listener: downloadingCompletionListener) {
-                        listener.onDownloadingCompleted(desc);
+            for (final DownloadCompleteListener listener : downloadingCompletionListener) {
+                listener.onDownloadingCompleted(desc);
             }
         }
     }
 
-    public static DownloadCompleteBroadcastReceiver getInstance() {
-        if (sReceiver == null) {
-            sReceiver = new DownloadCompleteBroadcastReceiver();
-        }
-        return sReceiver;
-    }
-
-    private DownloadCompleteBroadcastReceiver() {
-        downloadingCompletionListener = new ArrayList<>();
+    public interface DownloadCompleteListener {
+        void onDownloadingCompleted(DownloadingTaskDescription desc);
     }
 }

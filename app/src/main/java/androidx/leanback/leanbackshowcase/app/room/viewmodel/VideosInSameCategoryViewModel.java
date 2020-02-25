@@ -17,11 +17,12 @@
 package androidx.leanback.leanbackshowcase.app.room.viewmodel;
 
 import android.app.Application;
+
+import androidx.annotation.NonNull;
+import androidx.leanback.leanbackshowcase.app.room.db.entity.VideoEntity;
+import androidx.leanback.leanbackshowcase.app.room.db.repo.VideosRepository;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-import androidx.annotation.NonNull;
-import androidx.leanback.leanbackshowcase.app.room.db.repo.VideosRepository;
-import androidx.leanback.leanbackshowcase.app.room.db.entity.VideoEntity;
 
 import java.util.List;
 

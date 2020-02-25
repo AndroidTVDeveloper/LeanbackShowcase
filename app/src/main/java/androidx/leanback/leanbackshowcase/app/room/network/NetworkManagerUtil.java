@@ -20,9 +20,10 @@ import android.app.DownloadManager;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Environment;
+import android.util.Log;
+
 import androidx.leanback.leanbackshowcase.app.room.controller.app.SampleApplication;
 import androidx.leanback.leanbackshowcase.app.room.db.entity.VideoEntity;
-import android.util.Log;
 
 import java.io.File;
 import java.util.Arrays;
@@ -34,15 +35,16 @@ import java.util.Map;
  */
 public class NetworkManagerUtil {
 
+    public static final String SUFFIX_SEPARATOR = ".";
+    // A queue which maintain all downloading task
+    final static Map<Long, DownloadingTaskDescription> downloadingTaskQueue = new HashMap<>();
     // resource category
     private static final String VIDEO = "video";
     private static final String BACKGROUND = "background";
     private static final String CARD = "card";
-
     // For debugging purpose.
     private static final Boolean DEBUG = false;
     private static final String TAG = "NetworkManagerUtil";
-
     // Prompt Notification.
     private static final String DOWNLOAD_VIDEO = "Download Video";
     private static final String DOWNLOAD_SELECTED_VIDEO = "Download Selected Video";
@@ -51,9 +53,6 @@ public class NetworkManagerUtil {
             "Downloading background image file";
     private static final String DOWNLOAD_CARD_IMAGE = "Download card image";
     private static final String DOWNLOADING_CARD_IMAGE_FILE = "Downloading card image file";
-    public static final String SUFFIX_SEPARATOR = ".";
-    // A queue which maintain all downloading task
-    final static Map<Long, DownloadingTaskDescription> downloadingTaskQueue = new HashMap<>();
 
     public static void download(VideoEntity mSelectedVideo) {
         String videoUrl = mSelectedVideo.getVideoUrl();

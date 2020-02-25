@@ -19,13 +19,14 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Message;
-import androidx.leanback.media.PlaybackControlGlue;
+import android.util.Log;
+
 import androidx.leanback.leanbackshowcase.R;
+import androidx.leanback.media.PlaybackControlGlue;
 import androidx.leanback.widget.Action;
 import androidx.leanback.widget.ArrayObjectAdapter;
 import androidx.leanback.widget.PlaybackControlsRow;
 import androidx.leanback.widget.PlaybackControlsRowPresenter;
-import android.util.Log;
 
 /**
  * This glue extends the {@link PlaybackControlGlue} with a {@link MediaMetaData} support.
@@ -60,9 +61,8 @@ public abstract class MediaPlayerGlue extends PlaybackControlGlue {
     protected PlaybackControlsRow.MultiAction mRepeatAction;
     protected PlaybackControlsRow.MultiAction mThumbsUpAction;
     protected PlaybackControlsRow.MultiAction mThumbsDownAction;
-    private long mLastKeyDownEvent = 0L; // timestamp when the last DPAD_CENTER KEY_DOWN occurred
-
     protected MediaMetaData mMediaMetaData = null;
+    private long mLastKeyDownEvent = 0L; // timestamp when the last DPAD_CENTER KEY_DOWN occurred
 
     public MediaPlayerGlue(Context context) {
         super(context, new int[]{1});
@@ -72,6 +72,13 @@ public abstract class MediaPlayerGlue extends PlaybackControlGlue {
         mThumbsUpAction = new PlaybackControlsRow.ThumbsUpAction(getContext());
         mThumbsDownAction.setIndex(PlaybackControlsRow.ThumbsAction.OUTLINE);
         mThumbsUpAction.setIndex(PlaybackControlsRow.ThumbsAction.OUTLINE);
+    }
+
+    static void notifyItemChanged(ArrayObjectAdapter adapter, Object object) {
+        int index = adapter.indexOf(object);
+        if (index >= 0) {
+            adapter.notifyArrayItemRangeChanged(index, 1);
+        }
     }
 
     @Override
@@ -94,7 +101,8 @@ public abstract class MediaPlayerGlue extends PlaybackControlGlue {
                 R.color.player_background_color));
     }
 
-    @Override public void enableProgressUpdating(final boolean enabled) {
+    @Override
+    public void enableProgressUpdating(final boolean enabled) {
         Log.d(TAG, "enableProgressUpdating: " + enabled);
         if (!enabled) {
             mHandler.removeMessages(REFRESH_PROGRESS);
@@ -114,7 +122,8 @@ public abstract class MediaPlayerGlue extends PlaybackControlGlue {
         mHandler.sendMessageDelayed(refreshMsg, getUpdatePeriod());
     }
 
-    @Override public void onActionClicked(Action action) {
+    @Override
+    public void onActionClicked(Action action) {
         if (action instanceof PlaybackControlsRow.ShuffleAction
                 || action instanceof PlaybackControlsRow.RepeatAction) {
             ((PlaybackControlsRow.MultiAction) action).nextIndex();
@@ -144,44 +153,43 @@ public abstract class MediaPlayerGlue extends PlaybackControlGlue {
         }
     }
 
-    static void notifyItemChanged(ArrayObjectAdapter adapter, Object object) {
-        int index = adapter.indexOf(object);
-        if (index >= 0) {
-            adapter.notifyArrayItemRangeChanged(index, 1);
-        }
-    }
-
     void notifySecondaryActionChanged(Action act) {
         notifyItemChanged((ArrayObjectAdapter) getControlsRow().getSecondaryActionsAdapter(), act);
     }
 
-    @Override public boolean hasValidMedia() {
+    @Override
+    public boolean hasValidMedia() {
         return mMediaMetaData != null;
     }
 
 
-    @Override public CharSequence getMediaTitle() {
+    @Override
+    public CharSequence getMediaTitle() {
         return hasValidMedia() ? mMediaMetaData.getMediaTitle() : "N/a";
     }
 
-    @Override public CharSequence getMediaSubtitle() {
+    @Override
+    public CharSequence getMediaSubtitle() {
         return hasValidMedia() ? mMediaMetaData.getMediaArtistName() : "N/a";
     }
 
-    @Override public Drawable getMediaArt() {
+    @Override
+    public Drawable getMediaArt() {
         return (hasValidMedia() && mMediaMetaData.getMediaAlbumArtResId() != 0) ?
                 getContext().getResources().
                         getDrawable(mMediaMetaData.getMediaAlbumArtResId(), null)
                 : null;
     }
 
-    @Override public long getSupportedActions() {
+    @Override
+    public long getSupportedActions() {
         return PlaybackControlGlue.ACTION_PLAY_PAUSE
                 | PlaybackControlGlue.ACTION_SKIP_TO_NEXT
                 | PlaybackControlGlue.ACTION_SKIP_TO_PREVIOUS;
     }
 
-    @Override public int getCurrentSpeedId() {
+    @Override
+    public int getCurrentSpeedId() {
         return isMediaPlaying() ? PLAYBACK_SPEED_NORMAL : PLAYBACK_SPEED_PAUSED;
     }
 

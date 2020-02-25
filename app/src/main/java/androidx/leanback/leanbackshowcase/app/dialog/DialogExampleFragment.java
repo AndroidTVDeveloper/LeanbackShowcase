@@ -15,12 +15,13 @@
 package androidx.leanback.leanbackshowcase.app.dialog;
 
 import android.os.Bundle;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.leanback.app.GuidedStepFragment;
 import androidx.leanback.leanbackshowcase.R;
 import androidx.leanback.widget.GuidanceStylist.Guidance;
 import androidx.leanback.widget.GuidedAction;
-import android.widget.Toast;
 
 import java.util.List;
 

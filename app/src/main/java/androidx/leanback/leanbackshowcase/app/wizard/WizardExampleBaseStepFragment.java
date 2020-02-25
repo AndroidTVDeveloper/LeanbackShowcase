@@ -15,9 +15,10 @@
 package androidx.leanback.leanbackshowcase.app.wizard;
 
 import android.os.Bundle;
+
 import androidx.leanback.app.GuidedStepFragment;
-import androidx.leanback.leanbackshowcase.models.Movie;
 import androidx.leanback.leanbackshowcase.R;
+import androidx.leanback.leanbackshowcase.models.Movie;
 
 /**
  * A base class which provides all it's implementations with a method #getWizardActivity(). It also

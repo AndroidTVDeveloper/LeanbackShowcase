@@ -19,10 +19,13 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
+
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.leanback.app.DetailsFragment;
 import androidx.leanback.app.DetailsFragmentBackgroundController;
-import androidx.leanback.media.MediaPlayerAdapter;
-import androidx.leanback.media.MediaPlayerGlue;
 import androidx.leanback.leanbackshowcase.R;
 import androidx.leanback.leanbackshowcase.app.media.PlaybackSeekDiskDataProvider;
 import androidx.leanback.leanbackshowcase.app.media.VideoMediaPlayerGlue;
@@ -33,6 +36,8 @@ import androidx.leanback.leanbackshowcase.models.DetailedCard;
 import androidx.leanback.leanbackshowcase.models.Movie;
 import androidx.leanback.leanbackshowcase.utils.CardListRow;
 import androidx.leanback.leanbackshowcase.utils.Utils;
+import androidx.leanback.media.MediaPlayerAdapter;
+import androidx.leanback.media.MediaPlayerGlue;
 import androidx.leanback.widget.Action;
 import androidx.leanback.widget.ArrayObjectAdapter;
 import androidx.leanback.widget.ClassPresenterSelector;
@@ -47,10 +52,6 @@ import androidx.leanback.widget.OnItemViewSelectedListener;
 import androidx.leanback.widget.Presenter;
 import androidx.leanback.widget.Row;
 import androidx.leanback.widget.RowPresenter;
-import androidx.core.app.ActivityOptionsCompat;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -67,15 +68,14 @@ public class DetailViewExampleWithVideoBackgroundFragment extends DetailsFragmen
     private static final long ACTION_RENT = 2;
     private static final long ACTION_WISHLIST = 3;
     private static final long ACTION_RELATED = 4;
-
+    private final DetailsFragmentBackgroundController mDetailsBackground =
+            new DetailsFragmentBackgroundController(this);
     private Action mActionPlay;
     private Action mActionRent;
     private Action mActionWishList;
     private Action mActionRelated;
     private ArrayObjectAdapter mRowsAdapter;
     private DetailedCard data;
-    private final DetailsFragmentBackgroundController mDetailsBackground =
-            new DetailsFragmentBackgroundController(this);
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

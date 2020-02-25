@@ -25,8 +25,10 @@ import java.util.List;
  * url: {@link R.string.videos_url}
  */
 public class VideoRow {
-    @SerializedName("category") private String mCategory = "";
-    @SerializedName("videos") private List<VideoCard> mVideos;
+    @SerializedName("category")
+    private String mCategory = "";
+    @SerializedName("videos")
+    private List<VideoCard> mVideos;
 
     public String getCategory() {
         return mCategory;

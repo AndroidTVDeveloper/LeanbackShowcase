@@ -17,11 +17,12 @@ package androidx.leanback.leanbackshowcase.app.wizard;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.leanback.leanbackshowcase.R;
 import androidx.leanback.widget.GuidanceStylist;
 import androidx.leanback.widget.GuidedAction;
-import android.widget.Toast;
 
 import java.util.List;
 

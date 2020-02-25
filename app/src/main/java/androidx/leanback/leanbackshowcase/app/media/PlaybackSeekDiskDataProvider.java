@@ -37,6 +37,7 @@ public class PlaybackSeekDiskDataProvider extends PlaybackSeekAsyncDataProvider 
 
     final Paint mPaint;
     final String mPathPattern;
+
     PlaybackSeekDiskDataProvider(long duration, long interval, String pathPattern) {
         mPathPattern = pathPattern;
         int size = (int) (duration / interval) + 1;
@@ -48,28 +49,6 @@ public class PlaybackSeekDiskDataProvider extends PlaybackSeekAsyncDataProvider 
         mPaint = new Paint();
         mPaint.setTextSize(16);
         mPaint.setColor(Color.BLUE);
-    }
-
-    protected Bitmap doInBackground(Object task, int index, long position) {
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException ex) {
-            // Thread might be interrupted by cancel() call.
-        }
-        if (isCancelled(task)) {
-            return null;
-        }
-        String path = String.format(mPathPattern, (index + 1));
-        if (new File(path).exists()) {
-            return BitmapFactory.decodeFile(path);
-        } else {
-            Bitmap bmp = Bitmap.createBitmap(160, 160, Bitmap.Config.ARGB_8888);
-            Canvas canvas = new Canvas(bmp);
-            canvas.drawColor(Color.YELLOW);
-            canvas.drawText(path, 10, 80, mPaint);
-            canvas.drawText(Integer.toString(index), 10, 150, mPaint);
-            return bmp;
-        }
     }
 
     /**
@@ -97,6 +76,28 @@ public class PlaybackSeekDiskDataProvider extends PlaybackSeekAsyncDataProvider 
                     }
                 }
             });
+        }
+    }
+
+    protected Bitmap doInBackground(Object task, int index, long position) {
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException ex) {
+            // Thread might be interrupted by cancel() call.
+        }
+        if (isCancelled(task)) {
+            return null;
+        }
+        String path = String.format(mPathPattern, (index + 1));
+        if (new File(path).exists()) {
+            return BitmapFactory.decodeFile(path);
+        } else {
+            Bitmap bmp = Bitmap.createBitmap(160, 160, Bitmap.Config.ARGB_8888);
+            Canvas canvas = new Canvas(bmp);
+            canvas.drawColor(Color.YELLOW);
+            canvas.drawText(path, 10, 80, mPaint);
+            canvas.drawText(Integer.toString(index), 10, 150, mPaint);
+            return bmp;
         }
     }
 

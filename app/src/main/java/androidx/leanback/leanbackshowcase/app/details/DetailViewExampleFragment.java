@@ -17,14 +17,18 @@ package androidx.leanback.leanbackshowcase.app.details;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
+
 import androidx.leanback.app.DetailsFragment;
 import androidx.leanback.app.DetailsFragmentBackgroundController;
-import androidx.leanback.leanbackshowcase.models.DetailedCard;
 import androidx.leanback.leanbackshowcase.R;
-import androidx.leanback.leanbackshowcase.utils.CardListRow;
-import androidx.leanback.leanbackshowcase.utils.Utils;
 import androidx.leanback.leanbackshowcase.cards.presenters.CardPresenterSelector;
 import androidx.leanback.leanbackshowcase.models.Card;
+import androidx.leanback.leanbackshowcase.models.DetailedCard;
+import androidx.leanback.leanbackshowcase.utils.CardListRow;
+import androidx.leanback.leanbackshowcase.utils.Utils;
 import androidx.leanback.widget.Action;
 import androidx.leanback.widget.ArrayObjectAdapter;
 import androidx.leanback.widget.ClassPresenterSelector;
@@ -39,9 +43,6 @@ import androidx.leanback.widget.OnItemViewSelectedListener;
 import androidx.leanback.widget.Presenter;
 import androidx.leanback.widget.Row;
 import androidx.leanback.widget.RowPresenter;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -57,13 +58,12 @@ public class DetailViewExampleFragment extends DetailsFragment implements OnItem
     private static final long ACTION_BUY = 1;
     private static final long ACTION_WISHLIST = 2;
     private static final long ACTION_RELATED = 3;
-
+    private final DetailsFragmentBackgroundController mDetailsBackground =
+            new DetailsFragmentBackgroundController(this);
     private Action mActionBuy;
     private Action mActionWishList;
     private Action mActionRelated;
     private ArrayObjectAdapter mRowsAdapter;
-    private final DetailsFragmentBackgroundController mDetailsBackground =
-            new DetailsFragmentBackgroundController(this);
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

@@ -21,6 +21,10 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.DisplayMetrics;
+import android.view.View;
+import android.widget.Toast;
+
 import androidx.leanback.app.BackgroundManager;
 import androidx.leanback.app.BrowseFragment;
 import androidx.leanback.leanbackshowcase.R;
@@ -39,9 +43,6 @@ import androidx.leanback.widget.OnItemViewSelectedListener;
 import androidx.leanback.widget.Presenter;
 import androidx.leanback.widget.Row;
 import androidx.leanback.widget.RowPresenter;
-import android.util.DisplayMetrics;
-import android.view.View;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
@@ -161,6 +162,42 @@ public class DynamicRowsFragment extends BrowseFragment {
     }
 
     /**
+     * Helper functions for background image loading and associated animation
+     */
+
+    private void prepareBackgroundManager() {
+        mBackgroundManager = BackgroundManager.getInstance(getActivity());
+        mBackgroundManager.attach(getActivity().getWindow());
+        mMetrics = new DisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(mMetrics);
+    }
+
+    private void setupEventListeners() {
+        setOnItemViewClickedListener(new ItemViewClickedListener());
+        setOnItemViewSelectedListener(new ItemViewSelectedListener());
+    }
+
+    protected void updateBackgroundImage(String uri) {
+        int width = mMetrics.widthPixels;
+        int height = mMetrics.heightPixels;
+        Glide.with(getActivity())
+                .load(uri)
+                .into(new SimpleTarget<Drawable>(width, height) {
+                    @Override
+                    public void onResourceReady(Drawable resource,
+                                                Transition<? super Drawable> glideAnimation) {
+                        mBackgroundManager.setDrawable(resource);
+                    }
+                });
+        mHandler.removeCallbacks(mBackgroudUpdateRunnable);
+    }
+
+    private void startBackgroundTimer() {
+        mHandler.removeCallbacks(mBackgroudUpdateRunnable);
+        mHandler.postDelayed(mBackgroudUpdateRunnable, BACKGROUND_UPDATE_DELAY);
+    }
+
+    /**
      * Click and select event listener
      */
 
@@ -207,41 +244,5 @@ public class DynamicRowsFragment extends BrowseFragment {
                 mBackgroundManager.setDrawable(null);
             }
         }
-    }
-
-    /**
-     * Helper functions for background image loading and associated animation
-     */
-
-    private void prepareBackgroundManager() {
-        mBackgroundManager = BackgroundManager.getInstance(getActivity());
-        mBackgroundManager.attach(getActivity().getWindow());
-        mMetrics = new DisplayMetrics();
-        getActivity().getWindowManager().getDefaultDisplay().getMetrics(mMetrics);
-    }
-
-    private void setupEventListeners() {
-        setOnItemViewClickedListener(new ItemViewClickedListener());
-        setOnItemViewSelectedListener(new ItemViewSelectedListener());
-    }
-
-    protected void updateBackgroundImage(String uri) {
-        int width = mMetrics.widthPixels;
-        int height = mMetrics.heightPixels;
-        Glide.with(getActivity())
-                .load(uri)
-                .into(new SimpleTarget<Drawable>(width, height) {
-                    @Override
-                    public void onResourceReady(Drawable resource,
-                                                Transition<? super Drawable> glideAnimation) {
-                        mBackgroundManager.setDrawable(resource);
-                    }
-                });
-        mHandler.removeCallbacks(mBackgroudUpdateRunnable);
-    }
-
-    private void startBackgroundTimer() {
-        mHandler.removeCallbacks(mBackgroudUpdateRunnable);
-        mHandler.postDelayed(mBackgroudUpdateRunnable, BACKGROUND_UPDATE_DELAY);
     }
 }

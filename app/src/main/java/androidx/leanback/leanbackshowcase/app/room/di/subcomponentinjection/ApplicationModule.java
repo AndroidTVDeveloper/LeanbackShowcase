@@ -18,16 +18,19 @@ package androidx.leanback.leanbackshowcase.app.room.di.subcomponentinjection;
 
 
 import android.app.Application;
-import androidx.room.Room;
+
 import androidx.leanback.leanbackshowcase.app.room.db.AppDatabase;
 import androidx.leanback.leanbackshowcase.app.room.db.dao.CategoryDao;
 import androidx.leanback.leanbackshowcase.app.room.db.dao.VideoDao;
 import androidx.leanback.leanbackshowcase.app.room.di.viewmodel.ViewModelModule;
-import dagger.Module;
-import dagger.Provides;
+import androidx.room.Room;
+
 import javax.inject.Singleton;
 
-@Module(includes= ViewModelModule.class)
+import dagger.Module;
+import dagger.Provides;
+
+@Module(includes = ViewModelModule.class)
 public class ApplicationModule {
 
     @Singleton

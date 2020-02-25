@@ -19,17 +19,25 @@ import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import androidx.leanback.app.PlaybackFragment;
-import androidx.leanback.app.PlaybackFragmentGlueHost;
-import androidx.leanback.leanbackshowcase.utils.Constants;
-import androidx.leanback.leanbackshowcase.R;
-import androidx.leanback.leanbackshowcase.utils.Utils;
-import androidx.leanback.leanbackshowcase.models.Song;
-import androidx.leanback.leanbackshowcase.models.SongList;
-import androidx.leanback.widget.*;
-import androidx.leanback.widget.AbstractMediaItemPresenter;
 import android.util.Log;
 import android.widget.TextView;
+
+import androidx.leanback.app.PlaybackFragment;
+import androidx.leanback.app.PlaybackFragmentGlueHost;
+import androidx.leanback.leanbackshowcase.R;
+import androidx.leanback.leanbackshowcase.models.Song;
+import androidx.leanback.leanbackshowcase.models.SongList;
+import androidx.leanback.leanbackshowcase.utils.Constants;
+import androidx.leanback.leanbackshowcase.utils.Utils;
+import androidx.leanback.widget.AbstractMediaItemPresenter;
+import androidx.leanback.widget.AbstractMediaListHeaderPresenter;
+import androidx.leanback.widget.ArrayObjectAdapter;
+import androidx.leanback.widget.BaseOnItemViewClickedListener;
+import androidx.leanback.widget.ClassPresenterSelector;
+import androidx.leanback.widget.MultiActionsProvider;
+import androidx.leanback.widget.Presenter;
+import androidx.leanback.widget.PresenterSelector;
+import androidx.leanback.widget.RowPresenter;
 
 import com.google.gson.Gson;
 
@@ -45,11 +53,16 @@ public class MusicConsumptionExampleFragment extends PlaybackFragment implements
     private static final String TAG = "MusicConsumptionExampleFragment";
     private static final int PLAYLIST_ACTION_ID = 0;
     private static final int FAVORITE_ACTION_ID = 1;
+    private static TextView firstRowView;
     private ArrayObjectAdapter mRowsAdapter;
     private MusicMediaPlayerGlue mGlue;
-    private static TextView firstRowView;
 
-    @Override public void onCreate(Bundle savedInstanceState) {
+    public MusicConsumptionExampleFragment() {
+        super();
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (Constants.LOCAL_LOGD) Log.d(TAG, "onCreate");
 
@@ -65,12 +78,12 @@ public class MusicConsumptionExampleFragment extends PlaybackFragment implements
         Resources res = getActivity().getResources();
 
         // For each song add a playlist and favorite actions.
-        for(Song song : songList) {
+        for (Song song : songList) {
             MultiActionsProvider.MultiAction[] mediaRowActions = new
                     MultiActionsProvider.MultiAction[2];
             MultiActionsProvider.MultiAction playlistAction = new
                     MultiActionsProvider.MultiAction(PLAYLIST_ACTION_ID);
-            Drawable[] playlistActionDrawables = new Drawable[] {
+            Drawable[] playlistActionDrawables = new Drawable[]{
                     res.getDrawable(R.drawable.ic_playlist_add_white_24dp,
                             getActivity().getTheme()),
                     res.getDrawable(R.drawable.ic_playlist_add_filled_24dp,
@@ -80,7 +93,7 @@ public class MusicConsumptionExampleFragment extends PlaybackFragment implements
 
             MultiActionsProvider.MultiAction favoriteAction = new
                     MultiActionsProvider.MultiAction(FAVORITE_ACTION_ID);
-            Drawable[] favoriteActionDrawables = new Drawable[] {
+            Drawable[] favoriteActionDrawables = new Drawable[]{
                     res.getDrawable(R.drawable.ic_favorite_border_white_24dp,
                             getActivity().getTheme()),
                     res.getDrawable(R.drawable.ic_favorite_filled_24dp,
@@ -128,6 +141,71 @@ public class MusicConsumptionExampleFragment extends PlaybackFragment implements
         mGlue.releaseServiceCallback();
     }
 
+    private void addPlaybackControlsRow(List<Song> songList) {
+        mRowsAdapter = new ArrayObjectAdapter(new ClassPresenterSelector()
+                .addClassPresenterSelector(Song.class, new SongPresenterSelector()
+                        .setSongPresenterRegular(new SongPresenter(getActivity(),
+                                R.style.Theme_Example_LeanbackMusic_RegularSongNumbers))
+                        .setSongPresenterFavorite(new SongPresenter(getActivity(),
+                                R.style.Theme_Example_LeanbackMusic_FavoriteSongNumbers)))
+                .addClassPresenter(TrackListHeader.class, new TrackListHeaderPresenter()));
+        mRowsAdapter.add(new TrackListHeader());
+        mRowsAdapter.addAll(mRowsAdapter.size(), songList);
+        setAdapter(mRowsAdapter);
+        setOnItemViewClickedListener(this);
+    }
+
+    @Override
+    public void onItemClicked(Presenter.ViewHolder itemViewHolder, Object item,
+                              RowPresenter.ViewHolder rowViewHolder, Object row) {
+
+        if (row instanceof Song) {
+            // if a media item row is clicked
+            Song clickedSong = (Song) row;
+            AbstractMediaItemPresenter.ViewHolder songRowVh =
+                    (AbstractMediaItemPresenter.ViewHolder) rowViewHolder;
+
+            // if an action within a media item row is clicked
+            if (item instanceof MultiActionsProvider.MultiAction) {
+                if (((MultiActionsProvider.MultiAction) item).getId() == FAVORITE_ACTION_ID) {
+                    MultiActionsProvider.MultiAction favoriteAction =
+                            (MultiActionsProvider.MultiAction) item;
+                    MultiActionsProvider.MultiAction playlistAction =
+                            songRowVh.getMediaItemRowActions()[0];
+                    favoriteAction.incrementIndex();
+                    playlistAction.incrementIndex();
+
+                    clickedSong.setFavorite(!clickedSong.isFavorite());
+                    songRowVh.notifyDetailsChanged();
+                    songRowVh.notifyActionChanged(playlistAction);
+                    songRowVh.notifyActionChanged(favoriteAction);
+                }
+            } else if (item == null) {
+                // if a media item details is clicked, start playing that media item
+                onSongDetailsClicked(clickedSong);
+            }
+
+        }
+    }
+
+    public void onSongDetailsClicked(Song song) {
+        mGlue.prepareAndPlay(getUri(song));
+    }
+
+    private Uri getUri(Song song) {
+        return Utils.getResourceUri(getActivity(), song.getFileResource(getActivity()));
+    }
+
+    private MediaMetaData createMetaDataFromSong(Song song) {
+        MediaMetaData mediaMetaData = new MediaMetaData();
+        mediaMetaData.setMediaTitle(song.getTitle());
+        mediaMetaData.setMediaArtistName(song.getDescription());
+        Uri uri = getUri(song);
+        mediaMetaData.setMediaSourceUri(uri);
+        mediaMetaData.setMediaAlbumArtResId(song.getImageResource(getActivity()));
+        return mediaMetaData;
+    }
+
     static class SongPresenter extends AbstractMediaItemPresenter {
 
         SongPresenter() {
@@ -142,7 +220,7 @@ public class MusicConsumptionExampleFragment extends PlaybackFragment implements
         @Override
         protected void onBindMediaDetails(ViewHolder vh, Object item) {
 
-            int favoriteTextColor =  vh.view.getContext().getResources().getColor(
+            int favoriteTextColor = vh.view.getContext().getResources().getColor(
                     R.color.song_row_favorite_color);
             Song song = (Song) item;
             if (song.getNumber() == 1 && firstRowView == null) {
@@ -198,7 +276,7 @@ public class MusicConsumptionExampleFragment extends PlaybackFragment implements
 
         @Override
         public Presenter getPresenter(Object item) {
-            return ( (Song) item).isFavorite() ? mFavoritePresenter : mRegularPresenter;
+            return ((Song) item).isFavorite() ? mFavoritePresenter : mRegularPresenter;
         }
 
     }
@@ -213,75 +291,5 @@ public class MusicConsumptionExampleFragment extends PlaybackFragment implements
         protected void onBindMediaListHeaderViewHolder(ViewHolder vh, Object item) {
             vh.getHeaderView().setText("Tracklist");
         }
-    }
-
-    private void addPlaybackControlsRow(List<Song> songList) {
-        mRowsAdapter = new ArrayObjectAdapter(new ClassPresenterSelector()
-                .addClassPresenterSelector(Song.class, new SongPresenterSelector()
-                        .setSongPresenterRegular(new SongPresenter(getActivity(),
-                                R.style.Theme_Example_LeanbackMusic_RegularSongNumbers))
-                        .setSongPresenterFavorite(new SongPresenter(getActivity(),
-                                R.style.Theme_Example_LeanbackMusic_FavoriteSongNumbers)))
-                .addClassPresenter(TrackListHeader.class, new TrackListHeaderPresenter()));
-        mRowsAdapter.add(new TrackListHeader());
-        mRowsAdapter.addAll(mRowsAdapter.size(), songList);
-        setAdapter(mRowsAdapter);
-        setOnItemViewClickedListener(this);
-    }
-
-    public MusicConsumptionExampleFragment() {
-        super();
-    }
-
-
-
-    @Override public void onItemClicked(Presenter.ViewHolder itemViewHolder, Object item,
-                                        RowPresenter.ViewHolder rowViewHolder, Object row) {
-
-        if (row instanceof  Song) {
-            // if a media item row is clicked
-            Song clickedSong = (Song) row;
-            AbstractMediaItemPresenter.ViewHolder songRowVh =
-                    (AbstractMediaItemPresenter.ViewHolder) rowViewHolder;
-
-            // if an action within a media item row is clicked
-            if (item instanceof MultiActionsProvider.MultiAction) {
-                if ( ((MultiActionsProvider.MultiAction) item).getId() == FAVORITE_ACTION_ID) {
-                    MultiActionsProvider.MultiAction favoriteAction =
-                            (MultiActionsProvider.MultiAction) item;
-                    MultiActionsProvider.MultiAction playlistAction =
-                            songRowVh.getMediaItemRowActions()[0];
-                    favoriteAction.incrementIndex();
-                    playlistAction.incrementIndex();
-
-                    clickedSong.setFavorite(!clickedSong.isFavorite());
-                    songRowVh.notifyDetailsChanged();
-                    songRowVh.notifyActionChanged(playlistAction);
-                    songRowVh.notifyActionChanged(favoriteAction);
-                }
-            } else if (item == null){
-                // if a media item details is clicked, start playing that media item
-                onSongDetailsClicked(clickedSong);
-            }
-
-        }
-    }
-
-    public void onSongDetailsClicked(Song song) {
-        mGlue.prepareAndPlay(getUri(song));
-    }
-
-    private Uri getUri(Song song) {
-        return Utils.getResourceUri(getActivity(), song.getFileResource(getActivity()));
-    }
-
-    private MediaMetaData createMetaDataFromSong(Song song) {
-        MediaMetaData mediaMetaData = new MediaMetaData();
-        mediaMetaData.setMediaTitle(song.getTitle());
-        mediaMetaData.setMediaArtistName(song.getDescription());
-        Uri uri = getUri(song);
-        mediaMetaData.setMediaSourceUri(uri);
-        mediaMetaData.setMediaAlbumArtResId(song.getImageResource(getActivity()));
-        return mediaMetaData;
     }
 }

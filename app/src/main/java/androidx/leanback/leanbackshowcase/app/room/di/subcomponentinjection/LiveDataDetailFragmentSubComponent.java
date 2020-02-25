@@ -17,10 +17,9 @@
 package androidx.leanback.leanbackshowcase.app.room.di.subcomponentinjection;
 
 import android.app.Activity;
-import androidx.lifecycle.ViewModelProvider;
+
 import androidx.leanback.app.DetailsSupportFragment;
 import androidx.leanback.app.DetailsSupportFragmentBackgroundController;
-import androidx.leanback.media.MediaPlayerGlue;
 import androidx.leanback.leanbackshowcase.app.room.adapter.ListAdapter;
 import androidx.leanback.leanbackshowcase.app.room.controller.detail.LiveDataDetailViewWithVideoBackgroundFragment;
 import androidx.leanback.leanbackshowcase.app.room.db.entity.VideoEntity;
@@ -34,6 +33,7 @@ import androidx.leanback.leanbackshowcase.app.room.di.listener.ListenerModule;
 import androidx.leanback.leanbackshowcase.app.room.di.presenter.PresenterModule;
 import androidx.leanback.leanbackshowcase.app.room.di.row.RowModule;
 import androidx.leanback.leanbackshowcase.app.room.di.scope.PerFragment;
+import androidx.leanback.media.MediaPlayerGlue;
 import androidx.leanback.widget.ArrayObjectAdapter;
 import androidx.leanback.widget.DetailsOverviewRow;
 import androidx.leanback.widget.FullWidthDetailsOverviewSharedElementHelper;
@@ -41,9 +41,12 @@ import androidx.leanback.widget.ListRow;
 import androidx.leanback.widget.OnActionClickedListener;
 import androidx.leanback.widget.OnItemViewClickedListener;
 import androidx.leanback.widget.PresenterSelector;
+import androidx.lifecycle.ViewModelProvider;
+
+import java.util.Map;
+
 import dagger.BindsInstance;
 import dagger.Subcomponent;
-import java.util.Map;
 
 @PerFragment
 @Subcomponent(modules = {PresenterModule.class, RowModule.class,
@@ -56,21 +59,6 @@ public interface LiveDataDetailFragmentSubComponent {
     ViewModelProvider.Factory viewModelProviderFactory();
 
     PresenterSelector presenterSelector();
-
-    @Subcomponent.Builder
-    interface Builder {
-
-        @BindsInstance
-        Builder activity(Activity activity);
-
-        @BindsInstance
-        Builder detailsSupportFragment(DetailsSupportFragment fragment);
-
-        @BindsInstance
-        Builder actionClickedListener(OnActionClickedListener listener);
-
-        LiveDataDetailFragmentSubComponent build();
-    }
 
     void inject(LiveDataDetailViewWithVideoBackgroundFragment frag);
 
@@ -92,4 +80,19 @@ public interface LiveDataDetailFragmentSubComponent {
     ArrayObjectAdapter rowsArrayObjectAdapter();
 
     FullWidthDetailsOverviewSharedElementHelper helper();
+
+    @Subcomponent.Builder
+    interface Builder {
+
+        @BindsInstance
+        Builder activity(Activity activity);
+
+        @BindsInstance
+        Builder detailsSupportFragment(DetailsSupportFragment fragment);
+
+        @BindsInstance
+        Builder actionClickedListener(OnActionClickedListener listener);
+
+        LiveDataDetailFragmentSubComponent build();
+    }
 }

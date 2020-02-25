@@ -17,7 +17,6 @@
 package androidx.leanback.leanbackshowcase.app.room.di.androidinject;
 
 import androidx.leanback.leanbackshowcase.app.room.controller.overview.LiveDataFragment;
-
 import androidx.leanback.leanbackshowcase.app.room.di.presenter.PresenterModule;
 import androidx.leanback.leanbackshowcase.app.room.di.scope.PerFragment;
 
@@ -27,7 +26,7 @@ import dagger.android.ContributesAndroidInjector;
 @Module
 public abstract class LiveDataFragmentModule {
 
-  @PerFragment
-  @ContributesAndroidInjector(modules = {PresenterModule.class})
-  abstract LiveDataFragment contributeLiveDataFragment();
+    @PerFragment
+    @ContributesAndroidInjector(modules = {PresenterModule.class})
+    abstract LiveDataFragment contributeLiveDataFragment();
 }

@@ -16,15 +16,16 @@
 
 package androidx.leanback.leanbackshowcase.app.room.network;
 
-import androidx.lifecycle.LiveData;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.LinkProperties;
 import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.os.AsyncTask;
-import androidx.annotation.MainThread;
 import android.util.Log;
+
+import androidx.annotation.MainThread;
+import androidx.lifecycle.LiveData;
 
 public class NetworkLiveData extends LiveData<Boolean> {
 
@@ -39,21 +40,6 @@ public class NetworkLiveData extends LiveData<Boolean> {
     private static NetworkLiveData sNetworLivekData;
 
     private ConnectivityManager connectivityManager;
-
-    @MainThread
-    public static NetworkLiveData sync(Context context) {
-        if (sNetworLivekData == null) {
-            sNetworLivekData = new NetworkLiveData(context.getApplicationContext());
-        }
-        return sNetworLivekData;
-    }
-
-    private NetworkLiveData(Context context) {
-        connectivityManager = (ConnectivityManager) context.getSystemService(
-                        Context.CONNECTIVITY_SERVICE);
-        connectivityManager.registerDefaultNetworkCallback(callback);
-    }
-
     private ConnectivityManager.NetworkCallback callback = new ConnectivityManager.NetworkCallback() {
 
         @Override
@@ -89,25 +75,9 @@ public class NetworkLiveData extends LiveData<Boolean> {
             super.onLinkPropertiesChanged(network, linkProperties);
         }
     };
-
-    /**
-     * When there is an active observer observing the network live data, our network live data
-     * will register a callback to the ConnectivityManager to listen to the change of network
-     *
-     * Also at first time, it will fetch the connectivity information through network info
-     */
-    @Override
-    protected void onActive() {
-        super.onActive();
-        if (DEBUG) {
-            Log.e(TAG, "onActive: ", new Exception());
-        }
-        postConnectivityStatus.execute();
-    }
-
     // The interaction with connectivityManager may block the UI, so it is delegated as a
     // background task
-    private AsyncTask<Void, Void, Void>  postConnectivityStatus= new AsyncTask<Void, Void, Void>() {
+    private AsyncTask<Void, Void, Void> postConnectivityStatus = new AsyncTask<Void, Void, Void>() {
         @Override
         protected Void doInBackground(Void... voids) {
             if (connectivityManager.getActiveNetworkInfo() != null) {
@@ -118,6 +88,35 @@ public class NetworkLiveData extends LiveData<Boolean> {
             return null;
         }
     };
+
+    private NetworkLiveData(Context context) {
+        connectivityManager = (ConnectivityManager) context.getSystemService(
+                Context.CONNECTIVITY_SERVICE);
+        connectivityManager.registerDefaultNetworkCallback(callback);
+    }
+
+    @MainThread
+    public static NetworkLiveData sync(Context context) {
+        if (sNetworLivekData == null) {
+            sNetworLivekData = new NetworkLiveData(context.getApplicationContext());
+        }
+        return sNetworLivekData;
+    }
+
+    /**
+     * When there is an active observer observing the network live data, our network live data
+     * will register a callback to the ConnectivityManager to listen to the change of network
+     * <p>
+     * Also at first time, it will fetch the connectivity information through network info
+     */
+    @Override
+    protected void onActive() {
+        super.onActive();
+        if (DEBUG) {
+            Log.e(TAG, "onActive: ", new Exception());
+        }
+        postConnectivityStatus.execute();
+    }
 
     /**
      * When there is no active observer observing our network live data. Our network live data

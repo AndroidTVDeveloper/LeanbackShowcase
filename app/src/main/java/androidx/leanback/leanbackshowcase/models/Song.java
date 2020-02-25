@@ -23,24 +23,31 @@ import com.google.gson.annotations.SerializedName;
 
 public class Song implements MultiActionsProvider {
 
-    @SerializedName("title") private String mTitle = "";
-    @SerializedName("description") private String mDescription = "";
-    @SerializedName("text") private String mText = "";
-    @SerializedName("image") private String mImage = null;
-    @SerializedName("file") private String mFile = null;
-    @SerializedName("duration") private String mDuration = null;
-    @SerializedName("number") private int mNumber = 0;
-    @SerializedName("favorite") private boolean mFavorite = false;
+    @SerializedName("title")
+    private String mTitle = "";
+    @SerializedName("description")
+    private String mDescription = "";
+    @SerializedName("text")
+    private String mText = "";
+    @SerializedName("image")
+    private String mImage = null;
+    @SerializedName("file")
+    private String mFile = null;
+    @SerializedName("duration")
+    private String mDuration = null;
+    @SerializedName("number")
+    private int mNumber = 0;
+    @SerializedName("favorite")
+    private boolean mFavorite = false;
 
     private MultiAction[] mMediaRowActions;
 
+    public MultiAction[] getMediaRowActions() {
+        return mMediaRowActions;
+    }
 
     public void setMediaRowActions(MultiAction[] mediaRowActions) {
         mMediaRowActions = mediaRowActions;
-    }
-
-    public MultiAction[] getMediaRowActions() {
-        return mMediaRowActions;
     }
 
     public String getDuration() {

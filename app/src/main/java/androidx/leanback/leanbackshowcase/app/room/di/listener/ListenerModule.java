@@ -24,6 +24,10 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.DisplayMetrics;
+import android.view.View;
+
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.leanback.app.BackgroundManager;
 import androidx.leanback.leanbackshowcase.app.room.controller.detail.LiveDataDetailActivity;
 import androidx.leanback.leanbackshowcase.app.room.controller.detail.LiveDataDetailViewWithVideoBackgroundFragment;
@@ -38,9 +42,6 @@ import androidx.leanback.widget.OnItemViewSelectedListener;
 import androidx.leanback.widget.Presenter;
 import androidx.leanback.widget.Row;
 import androidx.leanback.widget.RowPresenter;
-import androidx.core.app.ActivityOptionsCompat;
-import android.util.DisplayMetrics;
-import android.view.View;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -67,7 +68,7 @@ public class ListenerModule {
         return new OnItemViewClickedListener() {
             @Override
             public void onItemClicked(Presenter.ViewHolder itemViewHolder, Object item,
-                    RowPresenter.ViewHolder rowViewHolder, Row row) {
+                                      RowPresenter.ViewHolder rowViewHolder, Row row) {
                 Intent intent;
                 Long videoItemId = ((VideoEntity) item).getId();
                 intent = new Intent(currentActivity, LiveDataDetailActivity.class);
@@ -96,7 +97,7 @@ public class ListenerModule {
         return new OnItemViewClickedListener() {
             @Override
             public void onItemClicked(Presenter.ViewHolder itemViewHolder, Object item,
-                    RowPresenter.ViewHolder rowViewHolder, Row row) {
+                                      RowPresenter.ViewHolder rowViewHolder, Row row) {
                 if (item instanceof VideoEntity) {
                     Intent intent;
                     Long videoItemId = ((VideoEntity) item).getId();
@@ -127,7 +128,7 @@ public class ListenerModule {
         return new OnItemViewClickedListener() {
             @Override
             public void onItemClicked(Presenter.ViewHolder itemViewHolder, Object item,
-                    RowPresenter.ViewHolder rowViewHolder, Row row) {
+                                      RowPresenter.ViewHolder rowViewHolder, Row row) {
                 if (item instanceof VideoEntity) {
                     Intent intent;
                     Long videoItemId = ((VideoEntity) item).getId();
@@ -161,12 +162,12 @@ public class ListenerModule {
     @IntoMap
     @ListenerModuleKey(LiveDataFragment.class)
     public OnItemViewSelectedListener provideOnItemViewSelectedListener(final Activity activity,
-            final DisplayMetrics metrics, final BackgroundManager backgroundManager,
-            final RequestOptions defaultPlaceHolder, final Drawable finalDrawable, final Handler mainHandler) {
+                                                                        final DisplayMetrics metrics, final BackgroundManager backgroundManager,
+                                                                        final RequestOptions defaultPlaceHolder, final Drawable finalDrawable, final Handler mainHandler) {
         return new OnItemViewSelectedListener() {
             @Override
             public void onItemSelected(Presenter.ViewHolder itemViewHolder, Object item,
-                    RowPresenter.ViewHolder rowViewHolder, Row row) {
+                                       RowPresenter.ViewHolder rowViewHolder, Row row) {
                 VideoEntity selectedVideo = (VideoEntity) item;
                 RunnableClass backgroundRunnable = new RunnableClass(selectedVideo, activity,
                         metrics, backgroundManager, defaultPlaceHolder, finalDrawable);
@@ -194,41 +195,10 @@ public class ListenerModule {
         };
     }
 
-    /**
-     * Define this runnable class explicitly so it can take dependency injected parameter to
-     * construct the runnable object for execution
-     */
-    private class RunnableClass implements Runnable {
-
-        private VideoEntity mSelectedVideo;
-        private Activity mActivity;
-        private DisplayMetrics mDisplayMetrics;
-        private BackgroundManager mBackgroundManager;
-        private RequestOptions mDefaultPlaceHolder;
-        private Drawable mDrawable;
-
-        public RunnableClass(VideoEntity selectedVideo, final Activity activity,
-                DisplayMetrics metrics, BackgroundManager backgroundManager,
-                RequestOptions defaultPlaceHolder, final Drawable drawable) {
-            mSelectedVideo = selectedVideo;
-            mActivity = activity;
-            mDisplayMetrics = metrics;
-            mBackgroundManager = backgroundManager;
-            mDefaultPlaceHolder = defaultPlaceHolder;
-            mDrawable = drawable;
-        }
-
-        @Override
-        public void run() {
-            loadAndSetBackgroundImageParameter(mSelectedVideo, mActivity, mDisplayMetrics,
-                    mBackgroundManager, mDefaultPlaceHolder, mDrawable);
-        }
-    }
-
     private void loadAndSetBackgroundImageParameter(VideoEntity selectedVideo,
-            final Activity activity, DisplayMetrics metrics,
-            final BackgroundManager backgroundManager, RequestOptions defaultPlaceHolder,
-            Drawable defualtDrawble) {
+                                                    final Activity activity, DisplayMetrics metrics,
+                                                    final BackgroundManager backgroundManager, RequestOptions defaultPlaceHolder,
+                                                    Drawable defualtDrawble) {
         if (selectedVideo == null) {
             return;
         }
@@ -254,10 +224,41 @@ public class ListenerModule {
                 .into(new SimpleTarget<Bitmap>(metrics.widthPixels, metrics.heightPixels) {
                     @Override
                     public void onResourceReady(Bitmap resource,
-                            Transition<? super Bitmap> glideAnimation) {
+                                                Transition<? super Bitmap> glideAnimation) {
                         backgroundManager.setDrawable(
                                 new BitmapDrawable(activity.getResources(), resource));
                     }
                 });
+    }
+
+    /**
+     * Define this runnable class explicitly so it can take dependency injected parameter to
+     * construct the runnable object for execution
+     */
+    private class RunnableClass implements Runnable {
+
+        private VideoEntity mSelectedVideo;
+        private Activity mActivity;
+        private DisplayMetrics mDisplayMetrics;
+        private BackgroundManager mBackgroundManager;
+        private RequestOptions mDefaultPlaceHolder;
+        private Drawable mDrawable;
+
+        public RunnableClass(VideoEntity selectedVideo, final Activity activity,
+                             DisplayMetrics metrics, BackgroundManager backgroundManager,
+                             RequestOptions defaultPlaceHolder, final Drawable drawable) {
+            mSelectedVideo = selectedVideo;
+            mActivity = activity;
+            mDisplayMetrics = metrics;
+            mBackgroundManager = backgroundManager;
+            mDefaultPlaceHolder = defaultPlaceHolder;
+            mDrawable = drawable;
+        }
+
+        @Override
+        public void run() {
+            loadAndSetBackgroundImageParameter(mSelectedVideo, mActivity, mDisplayMetrics,
+                    mBackgroundManager, mDefaultPlaceHolder, mDrawable);
+        }
     }
 }

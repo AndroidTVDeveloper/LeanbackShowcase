@@ -18,21 +18,28 @@ import android.content.Context;
 import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
+
 import androidx.leanback.app.VideoFragment;
 import androidx.leanback.app.VideoFragmentGlueHost;
 import androidx.leanback.media.MediaPlayerAdapter;
 import androidx.leanback.media.PlaybackGlue;
 import androidx.leanback.widget.PlaybackControlsRow;
-import android.util.Log;
 
 
 public class VideoConsumptionExampleFragment extends VideoFragment {
 
+    public static final String TAG = "VideoConsumption";
     private static final String URL = "https://storage.googleapis.com/android-tv/Sample videos/"
             + "April Fool's 2013/Explore Treasure Mode with Google Maps.mp4";
-    public static final String TAG = "VideoConsumption";
-    private VideoMediaPlayerGlue<MediaPlayerAdapter> mMediaPlayerGlue;
     final VideoFragmentGlueHost mHost = new VideoFragmentGlueHost(this);
+    AudioManager.OnAudioFocusChangeListener mOnAudioFocusChangeListener
+            = new AudioManager.OnAudioFocusChangeListener() {
+        @Override
+        public void onAudioFocusChange(int state) {
+        }
+    };
+    private VideoMediaPlayerGlue<MediaPlayerAdapter> mMediaPlayerGlue;
 
     static void playWhenReady(PlaybackGlue glue) {
         if (glue.isPrepared()) {
@@ -49,13 +56,6 @@ public class VideoConsumptionExampleFragment extends VideoFragment {
             });
         }
     }
-
-    AudioManager.OnAudioFocusChangeListener mOnAudioFocusChangeListener
-            = new AudioManager.OnAudioFocusChangeListener() {
-        @Override
-        public void onAudioFocusChange(int state) {
-        }
-    };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

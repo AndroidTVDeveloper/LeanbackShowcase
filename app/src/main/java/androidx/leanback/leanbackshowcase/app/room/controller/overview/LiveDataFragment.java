@@ -16,12 +16,13 @@
 
 package androidx.leanback.leanbackshowcase.app.room.controller.overview;
 
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Toast;
+
 import androidx.annotation.Nullable;
 import androidx.leanback.app.BrowseSupportFragment;
 import androidx.leanback.leanbackshowcase.R;
@@ -41,18 +42,19 @@ import androidx.leanback.widget.HeaderItem;
 import androidx.leanback.widget.ListRow;
 import androidx.leanback.widget.OnItemViewClickedListener;
 import androidx.leanback.widget.OnItemViewSelectedListener;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 
-import android.util.Log;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Toast;
-
-import dagger.android.support.AndroidSupportInjection;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+
 import javax.inject.Inject;
+
+import dagger.android.support.AndroidSupportInjection;
 
 // TOOD: why we need injectable interface here
 // just like regular class it can specify some component to provide
@@ -93,12 +95,11 @@ public class LiveDataFragment extends BrowseSupportFragment
 
     @Inject
     VideoCardPresenter videoCardPresenter;
+    private VideosViewModel mViewModel;
 
-    public DataLoadedListener getDataLoadedListener(){
+    public DataLoadedListener getDataLoadedListener() {
         return this;
     }
-
-    private VideosViewModel mViewModel;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

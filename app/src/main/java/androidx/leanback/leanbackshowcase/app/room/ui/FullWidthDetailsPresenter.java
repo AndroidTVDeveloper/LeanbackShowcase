@@ -15,37 +15,38 @@
  */
 package androidx.leanback.leanbackshowcase.app.room.ui;
 
+import android.view.View;
+import android.view.ViewGroup;
+
 import androidx.leanback.leanbackshowcase.R;
 import androidx.leanback.leanbackshowcase.app.room.controller.app.SampleApplication;
 import androidx.leanback.widget.FullWidthDetailsOverviewRowPresenter;
 import androidx.leanback.widget.Presenter;
 import androidx.leanback.widget.RowPresenter;
-import android.view.View;
-import android.view.ViewGroup;
 
 /**
  * Created by jingjiangli on 9/20/17.
  */
 
-public class FullWidthDetailsPresenter extends FullWidthDetailsOverviewRowPresenter{
+public class FullWidthDetailsPresenter extends FullWidthDetailsOverviewRowPresenter {
 
-  public FullWidthDetailsPresenter(Presenter detailsPresenter) {
-    super(detailsPresenter);
-  }
+    public FullWidthDetailsPresenter(Presenter detailsPresenter) {
+        super(detailsPresenter);
+    }
 
-  @Override
-  protected RowPresenter.ViewHolder createRowViewHolder(ViewGroup parent) {
-    // Customize Actionbar and Content by using custom colors.
-    RowPresenter.ViewHolder viewHolder = super.createRowViewHolder(parent);
+    @Override
+    protected RowPresenter.ViewHolder createRowViewHolder(ViewGroup parent) {
+        // Customize Actionbar and Content by using custom colors.
+        RowPresenter.ViewHolder viewHolder = super.createRowViewHolder(parent);
 
-    View actionsView = viewHolder.view.
-        findViewById(R.id.details_overview_actions_background);
-    actionsView.setBackgroundColor(SampleApplication.getInstance().
-        getColor(R.color.detail_view_actionbar_background));
+        View actionsView = viewHolder.view.
+                findViewById(R.id.details_overview_actions_background);
+        actionsView.setBackgroundColor(SampleApplication.getInstance().
+                getColor(R.color.detail_view_actionbar_background));
 
-    View detailsView = viewHolder.view.findViewById(R.id.details_frame);
-    detailsView.setBackgroundColor(
-        SampleApplication.getInstance().getResources().getColor(R.color.detail_view_background));
-    return viewHolder;
-  }
+        View detailsView = viewHolder.view.findViewById(R.id.details_frame);
+        detailsView.setBackgroundColor(
+                SampleApplication.getInstance().getResources().getColor(R.color.detail_view_background));
+        return viewHolder;
+    }
 }

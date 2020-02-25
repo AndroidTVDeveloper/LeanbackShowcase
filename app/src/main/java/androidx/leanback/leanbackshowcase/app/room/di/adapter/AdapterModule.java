@@ -30,6 +30,7 @@ import androidx.leanback.widget.ArrayObjectAdapter;
 import androidx.leanback.widget.DetailsOverviewRow;
 import androidx.leanback.widget.ListRow;
 import androidx.leanback.widget.PresenterSelector;
+
 import dagger.Module;
 import dagger.Provides;
 
@@ -59,7 +60,7 @@ public class AdapterModule {
     @SearchFragmentArrayObjectAdapterForRowsQualifier
     @PerFragment
     @Provides
-    ArrayObjectAdapter provideRowsArrayObjectAdapterInSearchFragment( ListRow relatedRow, PresenterSelector mps) {
+    ArrayObjectAdapter provideRowsArrayObjectAdapterInSearchFragment(ListRow relatedRow, PresenterSelector mps) {
         ArrayObjectAdapter rowsAdapter = new ArrayObjectAdapter(mps.getPresenter(relatedRow));
 
         rowsAdapter.add(relatedRow);

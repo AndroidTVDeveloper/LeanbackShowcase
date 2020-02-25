@@ -18,8 +18,9 @@ package androidx.leanback.leanbackshowcase.app.rows;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import androidx.tvprovider.media.tv.TvContractCompat;
+
 import androidx.tvprovider.media.tv.BasePreviewProgram.AspectRatio;
+import androidx.tvprovider.media.tv.TvContractCompat;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -33,65 +34,85 @@ import java.net.URISyntaxException;
  */
 public class VideoContent implements Parcelable {
 
+    /* package */ static final Creator CREATOR = new Creator() {
+        public VideoContent createFromParcel(Parcel in) {
+            return new VideoContent(in);
+        }
+
+        public VideoContent[] newArray(int size) {
+            return new VideoContent[size];
+        }
+    };
     /**
      * The description of this video
      */
-    @SerializedName("description") private String mDescription;
-
+    @SerializedName("description")
+    private String mDescription;
     /**
      * The url of video
      */
-    @SerializedName("source") private String mVideoUrl;
-
+    @SerializedName("source")
+    private String mVideoUrl;
     /**
      * The url of preview video
      */
-    @SerializedName("preview") private String mPreviewVideoUrl;
-
+    @SerializedName("preview")
+    private String mPreviewVideoUrl;
     /**
      * The category (Used as the name for the channel which contains this video)
      */
-    @SerializedName("category") private String mCategory;
-
+    @SerializedName("category")
+    private String mCategory;
     /**
      * The title of this video
      */
-    @SerializedName("title") private String mTitle;
-
+    @SerializedName("title")
+    private String mTitle;
     /**
      * This ID is basically for internal use, each video will have a unique ID associated with it
      * So different component in the application can use it to locate the unique video resource.
      */
-    @SerializedName("videoId") private String mVideoId;
-
+    @SerializedName("videoId")
+    private String mVideoId;
     /**
      * The url of the image shown on the card
      */
-    @SerializedName("card") private String mCardImageUrl;
-
+    @SerializedName("card")
+    private String mCardImageUrl;
     /**
      * The background image url
      */
-    @SerializedName("background") private String mBgImageUrl;
-
+    @SerializedName("background")
+    private String mBgImageUrl;
     /**
      * width/ height ratio for the card in the channel which has been added to main screen.
-     *
+     * <p>
      * In this sample app, it has been assigned to ASPECT_RATIO_16_9.
      */
     private int mAspectRatio = TvContractCompat.PreviewProgramColumns.ASPECT_RATIO_16_9;
-
     /**
      * This ID is generated from add this video to main screen operation, i.e. the unique
      * identification for the program in main screen.
-     *
+     * <p>
      * The purpose is to find the video which has been added to main screen.
      */
     private long mProgramId;
 
+    // Constructor to construct video content from parcel
+    private VideoContent(Parcel in) {
+        mVideoId = in.readString();
+        mTitle = in.readString();
+        mDescription = in.readString();
+        mBgImageUrl = in.readString();
+        mCardImageUrl = in.readString();
+        mVideoUrl = in.readString();
+        mPreviewVideoUrl = in.readString();
+        mCategory = in.readString();
+    }
+
     /**
      * Getter and Setter for class's member
-     *
+     * <p>
      * Set access permission to public so other component outside of this package can access
      */
 
@@ -131,7 +152,8 @@ public class VideoContent implements Parcelable {
         }
     }
 
-    public @AspectRatio int getAspectRatio() {
+    public @AspectRatio
+    int getAspectRatio() {
         return mAspectRatio;
     }
 
@@ -152,28 +174,6 @@ public class VideoContent implements Parcelable {
         dest.writeString(mCategory);
         dest.writeLong(mProgramId);
     }
-
-    // Constructor to construct video content from parcel
-    private VideoContent(Parcel in) {
-        mVideoId = in.readString();
-        mTitle = in.readString();
-        mDescription = in.readString();
-        mBgImageUrl = in.readString();
-        mCardImageUrl = in.readString();
-        mVideoUrl = in.readString();
-        mPreviewVideoUrl = in.readString();
-        mCategory = in.readString();
-    }
-
-    /* package */ static final Creator CREATOR = new Creator() {
-        public VideoContent createFromParcel(Parcel in) {
-            return new VideoContent(in);
-        }
-
-        public VideoContent[] newArray(int size) {
-            return new VideoContent[size];
-        }
-    };
 
     /**
      * For debugging purpose

@@ -18,7 +18,7 @@ package androidx.leanback.leanbackshowcase.app.room.di.subcomponentinjection;
 
 import dagger.Module;
 
-@Module(subcomponents ={ LiveDataDetailFragmentSubComponent.class})
+@Module(subcomponents = {LiveDataDetailFragmentSubComponent.class})
 public class SubComponentInstallmentModule {
 
 }

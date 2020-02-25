@@ -26,17 +26,17 @@ import java.util.List;
 /**
  * The structure of the json file is
  * {
- *   "googlevideos": [{
- *     "category": "Google+",
- *     "videos": [{
- *       "description": "",
- *          ...
- *     }]
- *   }]
+ * "googlevideos": [{
+ * "category": "Google+",
+ * "videos": [{
+ * "description": "",
+ * ...
+ * }]
+ * }]
  * }
- *
+ * <p>
  * So this class is used as a helper class for Gson library to reconstruct the object.
- *
+ * <p>
  * It also contains a static inner class VideosGroupByCategory. So we can deserialize the video
  * contents in that inside the google tag.
  */
@@ -51,11 +51,11 @@ public class VideosWithGoogleTag {
     /**
      * Helper class for Gson to deserialize the json structure
      * [{
-     *     "category": "Google+",
-     *     "videos": [{
-     *       "description": "",
-     *          ...
-     *     }]
+     * "category": "Google+",
+     * "videos": [{
+     * "description": "",
+     * ...
+     * }]
      * }]
      */
     public static class VideosGroupByCategory {

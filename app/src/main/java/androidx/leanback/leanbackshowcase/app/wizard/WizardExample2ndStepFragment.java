@@ -16,6 +16,7 @@ package androidx.leanback.leanbackshowcase.app.wizard;
 
 import android.app.FragmentManager;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.leanback.app.GuidedStepFragment;
 import androidx.leanback.leanbackshowcase.R;
@@ -95,10 +96,10 @@ public class WizardExample2ndStepFragment extends WizardExampleBaseStepFragment 
         paymentSubActions.clear();
         for (int i = 0; i < sCards.size(); i++) {
             paymentSubActions.add(new GuidedAction.Builder(getActivity())
-                            .title(sCards.get(i))
-                            .description("")
-                            .checkSetId(GuidedAction.DEFAULT_CHECK_SET_ID)
-                            .build()
+                    .title(sCards.get(i))
+                    .description("")
+                    .checkSetId(GuidedAction.DEFAULT_CHECK_SET_ID)
+                    .build()
             );
         }
         paymentSubActions.add(new GuidedAction.Builder(getActivity())
@@ -108,7 +109,7 @@ public class WizardExample2ndStepFragment extends WizardExampleBaseStepFragment 
                 .editable(false)
                 .build()
         );
-        if ( sSelectedCard >= 0 && sSelectedCard < sCards.size() ) {
+        if (sSelectedCard >= 0 && sSelectedCard < sCards.size()) {
             payment.setDescription(sCards.get(sSelectedCard));
             findActionById(ACTION_ID_CONFIRM).setEnabled(true);
         } else
@@ -121,7 +122,7 @@ public class WizardExample2ndStepFragment extends WizardExampleBaseStepFragment 
 
         if (action.isChecked()) {
             String payment = action.getTitle().toString();
-            if ( (sSelectedCard = sCards.indexOf(payment)) != -1 ) {
+            if ((sSelectedCard = sCards.indexOf(payment)) != -1) {
                 findActionById(ACTION_ID_PAYMENT_METHOD).setDescription(payment);
                 notifyActionChanged(findActionPositionById(ACTION_ID_PAYMENT_METHOD));
                 findActionById(ACTION_ID_CONFIRM).setEnabled(true);

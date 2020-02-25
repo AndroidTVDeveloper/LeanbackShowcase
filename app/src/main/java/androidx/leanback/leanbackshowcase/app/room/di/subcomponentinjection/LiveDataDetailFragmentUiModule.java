@@ -17,16 +17,18 @@
 package androidx.leanback.leanbackshowcase.app.room.di.subcomponentinjection;
 
 import android.app.Activity;
+
 import androidx.leanback.app.DetailsSupportFragment;
 import androidx.leanback.app.DetailsSupportFragmentBackgroundController;
-import androidx.leanback.media.MediaPlayerGlue;
 import androidx.leanback.leanbackshowcase.app.room.controller.detail.LiveDataDetailActivity;
 import androidx.leanback.leanbackshowcase.app.room.di.scope.PerFragment;
+import androidx.leanback.media.MediaPlayerGlue;
 import androidx.leanback.widget.DetailsOverviewRow;
 import androidx.leanback.widget.FullWidthDetailsOverviewRowPresenter;
 import androidx.leanback.widget.FullWidthDetailsOverviewSharedElementHelper;
 import androidx.leanback.widget.OnActionClickedListener;
 import androidx.leanback.widget.PresenterSelector;
+
 import dagger.Module;
 import dagger.Provides;
 
@@ -37,7 +39,7 @@ public class LiveDataDetailFragmentUiModule {
     @Provides
     @PerFragment
     public FullWidthDetailsOverviewSharedElementHelper provideHelper(Activity activity,
-            PresenterSelector mPs, DetailsOverviewRow row, OnActionClickedListener listener) {
+                                                                     PresenterSelector mPs, DetailsOverviewRow row, OnActionClickedListener listener) {
         FullWidthDetailsOverviewSharedElementHelper mHelper =
                 new FullWidthDetailsOverviewSharedElementHelper();
         mHelper.setSharedElementEnterTransition(activity,

@@ -16,13 +16,16 @@
 
 package androidx.leanback.leanbackshowcase.app.room.controller.detail;
 
-import androidx.fragment.app.FragmentActivity;
 import android.os.Bundle;
+
 import androidx.annotation.Nullable;
-import androidx.leanback.leanbackshowcase.R;
 import androidx.fragment.app.Fragment;
-import dagger.android.DispatchingAndroidInjector;
+import androidx.fragment.app.FragmentActivity;
+import androidx.leanback.leanbackshowcase.R;
+
 import javax.inject.Inject;
+
+import dagger.android.DispatchingAndroidInjector;
 
 
 /**
@@ -33,13 +36,12 @@ public class LiveDataDetailActivity extends FragmentActivity {
     public static final String SHARED_ELEMENT_NAME = "hero";
     public static final String VIDEO_ID = "video_id";
     public static final String CACHED_CONTENT = "video_cached";
+    @Inject
+    DispatchingAndroidInjector<Fragment> dispatchingAndroidInjector;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.detail_fragment_with_video_background);
     }
-
-    @Inject
-    DispatchingAndroidInjector<Fragment> dispatchingAndroidInjector;
 }

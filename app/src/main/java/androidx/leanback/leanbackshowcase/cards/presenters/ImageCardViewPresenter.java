@@ -15,10 +15,11 @@
 package androidx.leanback.leanbackshowcase.cards.presenters;
 
 import android.content.Context;
+import android.view.ContextThemeWrapper;
+
 import androidx.leanback.leanbackshowcase.R;
 import androidx.leanback.leanbackshowcase.models.Card;
 import androidx.leanback.widget.ImageCardView;
-import android.view.ContextThemeWrapper;
 
 import com.bumptech.glide.Glide;
 

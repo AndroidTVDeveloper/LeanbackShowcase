@@ -18,12 +18,13 @@ package androidx.leanback.leanbackshowcase.app.room.di.androidinjectorannotation
 
 import androidx.leanback.leanbackshowcase.app.room.controller.overview.LiveDataRowsActivity;
 import androidx.leanback.leanbackshowcase.app.room.di.scope.PerActivity;
+
 import dagger.Subcomponent;
 import dagger.android.AndroidInjector;
 
 @PerActivity
 @Subcomponent(modules = {ActivityModule.class, FragmentBuildersModule.class})
-public interface LiveDataOverviewActivitySubcomponent extends AndroidInjector<LiveDataRowsActivity>{
+public interface LiveDataOverviewActivitySubcomponent extends AndroidInjector<LiveDataRowsActivity> {
 
     @Subcomponent.Builder
     abstract class Builder extends AndroidInjector.Builder<LiveDataRowsActivity> {

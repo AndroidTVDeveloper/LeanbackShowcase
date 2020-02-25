@@ -16,12 +16,13 @@
 
 package androidx.leanback.leanbackshowcase.app.room.di.presenter;
 
-import dagger.MapKey;
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+
+import dagger.MapKey;
 
 
 @Documented
@@ -29,5 +30,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @MapKey
 public @interface PresenterSelectorKey {
-  Class<?> value();
+    Class<?> value();
 }

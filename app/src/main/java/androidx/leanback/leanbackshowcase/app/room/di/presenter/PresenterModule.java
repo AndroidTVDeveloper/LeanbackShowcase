@@ -16,23 +16,24 @@
 
 package androidx.leanback.leanbackshowcase.app.room.di.presenter;
 
-import androidx.lifecycle.ViewModelProvider;
 import androidx.leanback.leanbackshowcase.app.room.db.entity.VideoEntity;
 import androidx.leanback.leanbackshowcase.app.room.di.scope.PerFragment;
 import androidx.leanback.leanbackshowcase.app.room.ui.DetailsDescriptionPresenter;
 import androidx.leanback.leanbackshowcase.app.room.ui.LiveDataRowPresenter;
 import androidx.leanback.leanbackshowcase.app.room.ui.LiveDataRowPresenter.DataLoadedListener;
-import androidx.leanback.widget.Presenter;
-import androidx.leanback.widget.PresenterSelector;
-import dagger.Module;
-import dagger.Provides;
-import java.util.Map;
 import androidx.leanback.leanbackshowcase.app.room.ui.VideoCardPresenter;
 import androidx.leanback.widget.DetailsOverviewRow;
 import androidx.leanback.widget.FullWidthDetailsOverviewRowPresenter;
 import androidx.leanback.widget.ListRow;
 import androidx.leanback.widget.ListRowPresenter;
+import androidx.leanback.widget.Presenter;
+import androidx.leanback.widget.PresenterSelector;
+import androidx.lifecycle.ViewModelProvider;
 
+import java.util.Map;
+
+import dagger.Module;
+import dagger.Provides;
 import dagger.multibindings.IntoMap;
 
 @Module
@@ -95,7 +96,7 @@ public class PresenterModule {
     @PerFragment
     @Provides
     public LiveDataRowPresenter provideLiveDataRowPresenter(ViewModelProvider.Factory factory,
-            DataLoadedListener activity) {
+                                                            DataLoadedListener activity) {
         LiveDataRowPresenter rowPresenter = new LiveDataRowPresenter(factory);
 
         rowPresenter.registerDataLoadedListener(activity);

@@ -18,30 +18,34 @@ package androidx.leanback.leanbackshowcase.app.room.controller.overview;
 
 import android.Manifest;
 import android.app.DownloadManager;
-import androidx.fragment.app.FragmentActivity;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.leanback.leanbackshowcase.R;
 import androidx.leanback.leanbackshowcase.app.room.network.DownloadCompleteBroadcastReceiver;
 import androidx.leanback.leanbackshowcase.app.room.network.PermissionLiveData;
-import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.Fragment;
-import androidx.core.content.ContextCompat;
+
+import javax.inject.Inject;
+
 import dagger.android.AndroidInjection;
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.support.HasSupportFragmentInjector;
-import javax.inject.Inject;
 
 /**
  * Extend from LifecycleActivity so this activity can be used as the owner of lifecycle event
  */
-public class LiveDataRowsActivity extends FragmentActivity implements HasSupportFragmentInjector{
+public class LiveDataRowsActivity extends FragmentActivity implements HasSupportFragmentInjector {
 
     private static final int WRITE_PERMISSION = 0;
-
+    @Inject
+    DispatchingAndroidInjector<Fragment> dispatchingAndroidInjector;
     private DownloadCompleteBroadcastReceiver mReceiver;
 
     @Override
@@ -105,11 +109,6 @@ public class LiveDataRowsActivity extends FragmentActivity implements HasSupport
         super.onDestroy();
         unregisterReceiver(mReceiver);
     }
-
-
-    @Inject
-    DispatchingAndroidInjector<Fragment> dispatchingAndroidInjector;
-
 
     @Override
     public AndroidInjector<Fragment> supportFragmentInjector() {

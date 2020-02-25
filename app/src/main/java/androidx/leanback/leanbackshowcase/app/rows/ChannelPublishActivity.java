@@ -18,6 +18,7 @@ package androidx.leanback.leanbackshowcase.app.rows;
 
 import android.app.Activity;
 import android.os.Bundle;
+
 import androidx.leanback.app.GuidedStepFragment;
 
 /**

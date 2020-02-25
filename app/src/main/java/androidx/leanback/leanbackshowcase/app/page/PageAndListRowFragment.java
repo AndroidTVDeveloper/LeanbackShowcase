@@ -18,6 +18,14 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.FrameLayout;
+import android.widget.Toast;
+
 import androidx.leanback.app.BackgroundManager;
 import androidx.leanback.app.BrowseFragment;
 import androidx.leanback.app.RowsFragment;
@@ -40,13 +48,7 @@ import androidx.leanback.widget.PresenterSelector;
 import androidx.leanback.widget.Row;
 import androidx.leanback.widget.RowPresenter;
 import androidx.leanback.widget.VerticalGridPresenter;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
-import android.widget.FrameLayout;
-import android.widget.Toast;
+
 import com.google.gson.Gson;
 
 /**
@@ -135,7 +137,7 @@ public class PageAndListRowFragment extends BrowseFragment {
 
         @Override
         public Fragment createFragment(Object rowObj) {
-            Row row = (Row)rowObj;
+            Row row = (Row) rowObj;
             mBackgroundManager.setDrawable(null);
             if (row.getHeaderItem().getId() == HEADER_ID_1) {
                 return new SampleFragmentA();
@@ -191,9 +193,9 @@ public class PageAndListRowFragment extends BrowseFragment {
                         Object item,
                         RowPresenter.ViewHolder rowViewHolder,
                         Row row) {
-                    Card card = (Card)item;
+                    Card card = (Card) item;
                     Toast.makeText(getActivity(),
-                            "Clicked on "+card.getTitle(),
+                            "Clicked on " + card.getTitle(),
                             Toast.LENGTH_SHORT).show();
                 }
             });
@@ -238,14 +240,14 @@ public class PageAndListRowFragment extends BrowseFragment {
         }
 
         private void createRows() {
-                String json = Utils.inputStreamToString(getResources().openRawResource(
-                        R.raw.page_row_example));
-                CardRow[] rows = new Gson().fromJson(json, CardRow[].class);
-                for (CardRow row : rows) {
-                    if (row.getType() == CardRow.TYPE_DEFAULT) {
-                        mRowsAdapter.add(createCardRow(row));
-                    }
+            String json = Utils.inputStreamToString(getResources().openRawResource(
+                    R.raw.page_row_example));
+            CardRow[] rows = new Gson().fromJson(json, CardRow[].class);
+            for (CardRow row : rows) {
+                if (row.getType() == CardRow.TYPE_DEFAULT) {
+                    mRowsAdapter.add(createCardRow(row));
                 }
+            }
         }
 
         private Row createCardRow(CardRow cardRow) {
@@ -295,7 +297,7 @@ public class PageAndListRowFragment extends BrowseFragment {
         private ListRow createCardRow(CardRow cardRow) {
             SettingsIconPresenter iconCardPresenter = new SettingsIconPresenter(getActivity());
             ArrayObjectAdapter adapter = new ArrayObjectAdapter(iconCardPresenter);
-            for(Card card : cardRow.getCards()) {
+            for (Card card : cardRow.getCards()) {
                 adapter.add(card);
             }
 

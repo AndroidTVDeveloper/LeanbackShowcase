@@ -16,15 +16,16 @@
 
 package androidx.leanback.leanbackshowcase.app.room.di.viewmodel;
 
-import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.leanback.leanbackshowcase.app.room.viewmodel.VideosInSameCategoryViewModel;
 import androidx.leanback.leanbackshowcase.app.room.viewmodel.VideosViewModel;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
+
+import javax.inject.Singleton;
 
 import dagger.Binds;
 import dagger.Module;
 import dagger.multibindings.IntoMap;
-import javax.inject.Singleton;
 
 
 @Module

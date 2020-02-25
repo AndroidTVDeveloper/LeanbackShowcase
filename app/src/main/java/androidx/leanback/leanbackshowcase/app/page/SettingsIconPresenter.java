@@ -15,10 +15,11 @@
 package androidx.leanback.leanbackshowcase.app.page;
 
 import android.content.Context;
+import android.view.View;
+
 import androidx.leanback.leanbackshowcase.R;
 import androidx.leanback.leanbackshowcase.cards.presenters.ImageCardViewPresenter;
 import androidx.leanback.widget.ImageCardView;
-import android.view.View;
 
 /**
  * Simple presenter implementation to represent settings icon as cards.

@@ -16,12 +16,13 @@
 
 package androidx.leanback.leanbackshowcase.app.room.adapter;
 
+import android.util.Log;
+
 import androidx.leanback.widget.ObjectAdapter;
 import androidx.leanback.widget.Presenter;
 import androidx.leanback.widget.PresenterSelector;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListUpdateCallback;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -32,7 +33,7 @@ import java.util.List;
 public class ListAdapter<T> extends ObjectAdapter {
 
     // For debugging purpose
-    private final static String TAG =  "ListAdapter";
+    private final static String TAG = "ListAdapter";
     private final static Boolean DEBUG = false;
 
     private List<T> mItems = new ArrayList<>();
@@ -265,7 +266,7 @@ public class ListAdapter<T> extends ObjectAdapter {
              */
             @Override
             public void onMoved(int fromPosition, int toPosition) {
-                if (DEBUG){
+                if (DEBUG) {
                     Log.e(TAG, "onMoved: ");
                 }
                 notifyItemRangeChanged(fromPosition, toPosition - fromPosition + 1);
@@ -290,7 +291,7 @@ public class ListAdapter<T> extends ObjectAdapter {
             return true;
         }
 
-        if (o == null || getClass() != o.getClass()){
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
 

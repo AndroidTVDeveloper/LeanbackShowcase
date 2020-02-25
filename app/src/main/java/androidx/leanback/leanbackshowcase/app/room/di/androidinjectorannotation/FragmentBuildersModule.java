@@ -16,8 +16,9 @@
 
 package androidx.leanback.leanbackshowcase.app.room.di.androidinjectorannotation;
 
-import androidx.leanback.leanbackshowcase.app.room.controller.overview.LiveDataFragment;
 import androidx.fragment.app.Fragment;
+import androidx.leanback.leanbackshowcase.app.room.controller.overview.LiveDataFragment;
+
 import dagger.Binds;
 import dagger.Module;
 import dagger.android.AndroidInjector;

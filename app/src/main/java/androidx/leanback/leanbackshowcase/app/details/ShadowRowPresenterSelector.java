@@ -35,7 +35,8 @@ public class ShadowRowPresenterSelector extends PresenterSelector {
         mShadowDisabledRowPresenter.setShadowEnabled(false);
     }
 
-    @Override public Presenter getPresenter(Object item) {
+    @Override
+    public Presenter getPresenter(Object item) {
         if (!(item instanceof CardListRow)) return mShadowDisabledRowPresenter;
         CardListRow listRow = (CardListRow) item;
         CardRow row = listRow.getCardRow();
@@ -45,7 +46,7 @@ public class ShadowRowPresenterSelector extends PresenterSelector {
 
     @Override
     public Presenter[] getPresenters() {
-        return new Presenter [] {
+        return new Presenter[]{
                 mShadowDisabledRowPresenter,
                 mShadowEnabledRowPresenter
         };

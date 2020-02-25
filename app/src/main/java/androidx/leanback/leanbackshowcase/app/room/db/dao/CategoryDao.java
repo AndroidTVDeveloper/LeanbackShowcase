@@ -17,13 +17,13 @@
 
 package androidx.leanback.leanbackshowcase.app.room.db.dao;
 
+import androidx.leanback.leanbackshowcase.app.room.db.constant.DatabaseColumnConstant;
+import androidx.leanback.leanbackshowcase.app.room.db.entity.CategoryEntity;
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
-import androidx.leanback.leanbackshowcase.app.room.db.constant.DatabaseColumnConstant;
-import androidx.leanback.leanbackshowcase.app.room.db.entity.CategoryEntity;
 
 import java.util.List;
 

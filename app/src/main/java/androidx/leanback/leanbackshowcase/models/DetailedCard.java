@@ -21,16 +21,26 @@ import com.google.gson.annotations.SerializedName;
 
 public class DetailedCard {
 
-    @SerializedName("title") private String mTitle = "";
-    @SerializedName("description") private String mDescription = "";
-    @SerializedName("text") private String mText = "";
-    @SerializedName("localImageResource") private String mLocalImageResource = null;
-    @SerializedName("price") private String mPrice = null;
-    @SerializedName("characters") private Card[] mCharacters = null;
-    @SerializedName("recommended") private Card[] mRecommended = null;
-    @SerializedName("year") private int mYear = 0;
-    @SerializedName("trailerUrl") private String mTrailerUrl = null;
-    @SerializedName("videoUrl") private String mVideoUrl = null;
+    @SerializedName("title")
+    private String mTitle = "";
+    @SerializedName("description")
+    private String mDescription = "";
+    @SerializedName("text")
+    private String mText = "";
+    @SerializedName("localImageResource")
+    private String mLocalImageResource = null;
+    @SerializedName("price")
+    private String mPrice = null;
+    @SerializedName("characters")
+    private Card[] mCharacters = null;
+    @SerializedName("recommended")
+    private Card[] mRecommended = null;
+    @SerializedName("year")
+    private int mYear = 0;
+    @SerializedName("trailerUrl")
+    private String mTrailerUrl = null;
+    @SerializedName("videoUrl")
+    private String mVideoUrl = null;
 
 
     public String getPrice() {
@@ -75,6 +85,6 @@ public class DetailedCard {
 
     public int getLocalImageResourceId(Context context) {
         return context.getResources()
-                      .getIdentifier(getLocalImageResource(), "drawable", context.getPackageName());
+                .getIdentifier(getLocalImageResource(), "drawable", context.getPackageName());
     }
 }

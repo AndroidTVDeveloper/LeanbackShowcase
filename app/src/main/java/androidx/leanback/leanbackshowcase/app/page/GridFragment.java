@@ -16,6 +16,11 @@ package androidx.leanback.leanbackshowcase.app.page;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
 import androidx.leanback.app.BrowseFragment;
 import androidx.leanback.leanbackshowcase.R;
 import androidx.leanback.transition.TransitionHelper;
@@ -27,10 +32,6 @@ import androidx.leanback.widget.Presenter;
 import androidx.leanback.widget.Row;
 import androidx.leanback.widget.RowPresenter;
 import androidx.leanback.widget.VerticalGridPresenter;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 /**
  * A fragment for rendering items in a vertical grids.
@@ -53,6 +54,37 @@ public class GridFragment extends Fragment implements BrowseFragment.MainFragmen
                     GridFragment.this.setEntranceTransitionState(state);
                 }
             };
+    final private OnItemViewSelectedListener mViewSelectedListener =
+            new OnItemViewSelectedListener() {
+                @Override
+                public void onItemSelected(Presenter.ViewHolder itemViewHolder, Object item,
+                                           RowPresenter.ViewHolder rowViewHolder, Row row) {
+                    int position = mGridViewHolder.getGridView().getSelectedPosition();
+                    if (DEBUG) Log.v(TAG, "grid selected position " + position);
+                    gridOnItemSelected(position);
+                    if (mOnItemViewSelectedListener != null) {
+                        mOnItemViewSelectedListener.onItemSelected(itemViewHolder, item,
+                                rowViewHolder, row);
+                    }
+                }
+            };
+    final private OnChildLaidOutListener mChildLaidOutListener =
+            new OnChildLaidOutListener() {
+                @Override
+                public void onChildLaidOut(ViewGroup parent, View view, int position, long id) {
+                    if (position == 0) {
+                        showOrHideTitle();
+                    }
+                }
+            };
+
+    /**
+     * Returns the grid presenter.
+     */
+    public VerticalGridPresenter getGridPresenter() {
+        return mGridPresenter;
+    }
+
     /**
      * Sets the grid presenter.
      */
@@ -68,10 +100,10 @@ public class GridFragment extends Fragment implements BrowseFragment.MainFragmen
     }
 
     /**
-     * Returns the grid presenter.
+     * Returns the object adapter.
      */
-    public VerticalGridPresenter getGridPresenter() {
-        return mGridPresenter;
+    public ObjectAdapter getAdapter() {
+        return mAdapter;
     }
 
     /**
@@ -81,38 +113,6 @@ public class GridFragment extends Fragment implements BrowseFragment.MainFragmen
         mAdapter = adapter;
         updateAdapter();
     }
-
-    /**
-     * Returns the object adapter.
-     */
-    public ObjectAdapter getAdapter() {
-        return mAdapter;
-    }
-
-    final private OnItemViewSelectedListener mViewSelectedListener =
-            new OnItemViewSelectedListener() {
-                @Override
-                public void onItemSelected(Presenter.ViewHolder itemViewHolder, Object item,
-                                           RowPresenter.ViewHolder rowViewHolder, Row row) {
-                    int position = mGridViewHolder.getGridView().getSelectedPosition();
-                    if (DEBUG) Log.v(TAG, "grid selected position " + position);
-                    gridOnItemSelected(position);
-                    if (mOnItemViewSelectedListener != null) {
-                        mOnItemViewSelectedListener.onItemSelected(itemViewHolder, item,
-                                rowViewHolder, row);
-                    }
-                }
-            };
-
-    final private OnChildLaidOutListener mChildLaidOutListener =
-            new OnChildLaidOutListener() {
-                @Override
-                public void onChildLaidOut(ViewGroup parent, View view, int position, long id) {
-                    if (position == 0) {
-                        showOrHideTitle();
-                    }
-                }
-            };
 
     /**
      * Sets an item selection listener.
@@ -141,6 +141,13 @@ public class GridFragment extends Fragment implements BrowseFragment.MainFragmen
     }
 
     /**
+     * Returns the item clicked listener.
+     */
+    public OnItemViewClickedListener getOnItemViewClickedListener() {
+        return mOnItemViewClickedListener;
+    }
+
+    /**
      * Sets an item clicked listener.
      */
     public void setOnItemViewClickedListener(OnItemViewClickedListener listener) {
@@ -148,13 +155,6 @@ public class GridFragment extends Fragment implements BrowseFragment.MainFragmen
         if (mGridPresenter != null) {
             mGridPresenter.setOnItemViewClickedListener(mOnItemViewClickedListener);
         }
-    }
-
-    /**
-     * Returns the item clicked listener.
-     */
-    public OnItemViewClickedListener getOnItemViewClickedListener() {
-        return mOnItemViewClickedListener;
     }
 
     @Override
@@ -199,7 +199,7 @@ public class GridFragment extends Fragment implements BrowseFragment.MainFragmen
      */
     public void setSelectedPosition(int position) {
         mSelectedPosition = position;
-        if(mGridViewHolder != null && mGridViewHolder.getGridView().getAdapter() != null) {
+        if (mGridViewHolder != null && mGridViewHolder.getGridView().getAdapter() != null) {
             mGridViewHolder.getGridView().setSelectedPositionSmooth(position);
         }
     }

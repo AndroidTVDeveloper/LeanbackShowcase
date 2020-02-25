@@ -19,6 +19,7 @@ package androidx.leanback.leanbackshowcase.app.room.di.androidinjectorannotation
 import androidx.leanback.leanbackshowcase.app.room.controller.overview.LiveDataFragment;
 import androidx.leanback.leanbackshowcase.app.room.di.scope.PerFragment;
 import androidx.leanback.leanbackshowcase.app.room.ui.LiveDataRowPresenter.DataLoadedListener;
+
 import dagger.Module;
 import dagger.Provides;
 

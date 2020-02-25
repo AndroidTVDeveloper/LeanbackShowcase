@@ -16,46 +16,57 @@
 
 package androidx.leanback.leanbackshowcase.app.room.db.entity;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.leanback.leanbackshowcase.app.room.db.constant.DatabaseColumnConstant;
+import androidx.leanback.leanbackshowcase.app.room.db.constant.GsonConstant;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
-import android.os.Parcel;
-import android.os.Parcelable;
-import androidx.leanback.leanbackshowcase.app.room.db.constant.DatabaseColumnConstant;
-import androidx.leanback.leanbackshowcase.app.room.db.constant.GsonConstant;
 
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
 @Entity(tableName = DatabaseColumnConstant.VideoEntry.TABLE_NAME)
-public class VideoEntity implements  Parcelable {
+public class VideoEntity implements Parcelable {
 
+    /**
+     * Required by parcelable interface
+     */
+    public static final Parcelable.Creator<VideoEntity> CREATOR =
+            new Parcelable.Creator<VideoEntity>() {
+
+                @Override
+                public VideoEntity createFromParcel(Parcel in) {
+                    return new VideoEntity(in);
+                }
+
+                @Override
+                public VideoEntity[] newArray(int size) {
+                    return new VideoEntity[size];
+                }
+            };
     @SerializedName(GsonConstant.DESCRIPTION)
     @ColumnInfo(name = DatabaseColumnConstant.VideoEntry.COLUMN_DESC)
     private String mDescription;
-
     @SerializedName(GsonConstant.VIDEO_URLS)
     @Ignore
     private List<String> mVideoUrls;
-
     @SerializedName(GsonConstant.CARD_IMAGE_URL)
     @ColumnInfo(name = DatabaseColumnConstant.VideoEntry.COLUMN_CARD_IMAGE_URL)
     private String mCardImageUrl;
-
     @SerializedName(GsonConstant.BACKGROUND_IMAGE_URL)
     @ColumnInfo(name = DatabaseColumnConstant.VideoEntry.COLUMN_BG_IMAGE_URL)
     private String mBgImageUrl;
-
     @SerializedName(GsonConstant.TITLE)
     @ColumnInfo(name = DatabaseColumnConstant.VideoEntry.COLUMN_NAME)
     private String mTitle;
-
     @SerializedName(GsonConstant.STUDIO)
     @ColumnInfo(name = DatabaseColumnConstant.VideoEntry.COLUMN_STUDIO)
     private String mStudio;
-
     /**
      * The following field cannot be instantiate from json file.
      */
@@ -63,43 +74,27 @@ public class VideoEntity implements  Parcelable {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = DatabaseColumnConstant.VideoEntry.COLUMN_AUTO_GENERATE_ID)
     private long mId;
-
     // The url points to the local storage of the video content.
     @ColumnInfo(name = DatabaseColumnConstant.VideoEntry.COLUMN_VIDEO_CACHE)
     private String mVideoLocalStorageUrl;
-
     // The url points to the local storage of the video background image.
     @ColumnInfo(name = DatabaseColumnConstant.VideoEntry.COLUMN_BG_IMAGE_CACHE)
     private String mVideoBgImageLocalStorageUrl;
-
     // The url points to the local storage of the video card image.
     @ColumnInfo(name = DatabaseColumnConstant.VideoEntry.COLUMN_CARD_IMG_CACHE)
     private String mVideoCardImageLocalStorageUrl;
-
     // The mCategory of current video
     // A single mCategory may contain many different videos
     @ColumnInfo(name = DatabaseColumnConstant.VideoEntry.COLUMN_CATEGORY)
     private String mCategory;
-
     // The first url in urls array
     @ColumnInfo(name = DatabaseColumnConstant.VideoEntry.COLUMN_VIDEO_URL)
     private String mVideoUrl;
-
-    public String getTrailerVideoUrl() {
-        return mTrailerVideoUrl;
-    }
-
-    public void setTrailerVideoUrl(String mTrailerVideoUrl) {
-        this.mTrailerVideoUrl = mTrailerVideoUrl;
-    }
-
     // The first url in urls array
     @ColumnInfo(name = DatabaseColumnConstant.VideoEntry.COLUMN_VIDEO_TRAILER_URL)
     private String mTrailerVideoUrl;
-
     @ColumnInfo(name = DatabaseColumnConstant.VideoEntry.COLUMN_VIDEO_IS_RENTED)
     private boolean mRented;
-
     @ColumnInfo(name = DatabaseColumnConstant.VideoEntry.COLUMN_VIDEO_STATUS)
     private String mStatus;
 
@@ -108,6 +103,34 @@ public class VideoEntity implements  Parcelable {
      */
     public VideoEntity() {
         // no op
+    }
+
+    // This constructor is needed since we will pass the video item between different activities.
+    protected VideoEntity(Parcel in) {
+        mId = in.readLong();
+        mCategory = in.readString();
+        mTitle = in.readString();
+        mDescription = in.readString();
+        mBgImageUrl = in.readString();
+        mCardImageUrl = in.readString();
+        mVideoUrl = in.readString();
+        mStudio = in.readString();
+        mVideoCardImageLocalStorageUrl = in.readString();
+        mVideoBgImageLocalStorageUrl = in.readString();
+        mVideoLocalStorageUrl = in.readString();
+        mStatus = in.readString();
+        mTrailerVideoUrl = in.readString();
+
+        // Rented information (boolean) will be passed as a byte type
+        mRented = in.readByte() != 0;
+    }
+
+    public String getTrailerVideoUrl() {
+        return mTrailerVideoUrl;
+    }
+
+    public void setTrailerVideoUrl(String mTrailerVideoUrl) {
+        this.mTrailerVideoUrl = mTrailerVideoUrl;
     }
 
     /**
@@ -124,7 +147,6 @@ public class VideoEntity implements  Parcelable {
         this.mStatus = status;
     }
 
-
     /**
      * Is video entity rented or not
      */
@@ -140,17 +162,17 @@ public class VideoEntity implements  Parcelable {
     }
 
     /**
-     * setId
-     */
-    public void setId(long id) {
-        mId = id;
-    }
-
-    /**
      * getId
      */
     public long getId() {
         return mId;
+    }
+
+    /**
+     * setId
+     */
+    public void setId(long id) {
+        mId = id;
     }
 
     /**
@@ -307,43 +329,6 @@ public class VideoEntity implements  Parcelable {
         this.mVideoCardImageLocalStorageUrl = videoCardImageLocalStorageUrl;
     }
 
-    // This constructor is needed since we will pass the video item between different activities.
-    protected VideoEntity(Parcel in) {
-        mId = in.readLong();
-        mCategory = in.readString();
-        mTitle = in.readString();
-        mDescription = in.readString();
-        mBgImageUrl = in.readString();
-        mCardImageUrl = in.readString();
-        mVideoUrl = in.readString();
-        mStudio = in.readString();
-        mVideoCardImageLocalStorageUrl = in.readString();
-        mVideoBgImageLocalStorageUrl = in.readString();
-        mVideoLocalStorageUrl = in.readString();
-        mStatus = in.readString();
-        mTrailerVideoUrl = in.readString();
-
-        // Rented information (boolean) will be passed as a byte type
-        mRented = in.readByte() != 0;
-    }
-
-    /**
-     * Required by parcelable interface
-     */
-    public static final Parcelable.Creator<VideoEntity> CREATOR =
-            new Parcelable.Creator<VideoEntity>() {
-
-        @Override
-        public VideoEntity createFromParcel(Parcel in) {
-            return new VideoEntity(in);
-        }
-
-        @Override
-        public VideoEntity[] newArray(int size) {
-            return new VideoEntity[size];
-        }
-    };
-
     /**
      * Required by parcelable interface
      */
@@ -368,7 +353,7 @@ public class VideoEntity implements  Parcelable {
         dest.writeString(mTrailerVideoUrl);
 
         // Rented information (boolean) will be passed as a byte type
-        dest.writeByte((byte) (mRented ? 1:0));
+        dest.writeByte((byte) (mRented ? 1 : 0));
     }
 
     /**

@@ -27,14 +27,15 @@ import android.graphics.BitmapFactory;
 import android.media.tv.TvContract;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.util.Log;
+
 import androidx.annotation.DrawableRes;
+import androidx.leanback.leanbackshowcase.R;
+import androidx.leanback.leanbackshowcase.utils.Utils;
 import androidx.tvprovider.media.tv.Channel;
 import androidx.tvprovider.media.tv.ChannelLogoUtils;
 import androidx.tvprovider.media.tv.PreviewProgram;
 import androidx.tvprovider.media.tv.TvContractCompat;
-import androidx.leanback.leanbackshowcase.R;
-import androidx.leanback.leanbackshowcase.utils.Utils;
-import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
@@ -50,48 +51,61 @@ import java.util.Map;
 public final class ChannelContents {
 
     /**
+     * This HashMap will keep the mapping relationship between
+     * channel's publish ID (will be changed in different transaction) and
+     * channel's actual content
+     * <p>
+     * It is designed to toggle channel content's publish status
+     */
+    private static final Map<Long, ChannelContents> sLookupTable = new HashMap<>();
+    /* package */ static List<ChannelContents> sChannelContents;
+    /**
+     * The channel's description shown in the main screen after adding it
+     */
+    private final String mDescription = "Demo To Show how to add channel from App to main screen";
+    /**
      * All video resource inside this channel
      */
     @SerializedName("videos")
     private List<VideoContent> mVideos;
-
     /**
      * A unique ID for different channels
      * This is channel is mainly for internal use, and won't be changed
      */
     @SerializedName("channelId")
     private String mChannelContentsId;
-
     /**
      * The channel name shown in the main screen after adding it
      */
     @SerializedName("category")
     private String mName;
-
-    /**
-     * The channel's description shown in the main screen after adding it
-     */
-    private final String mDescription = "Demo To Show how to add channel from App to main screen";
-
     /**
      * Is current channel published or not
      * This is the symbol to toggle add/ remove behavior
      */
     private boolean mChannelPublished;
-
     /**
      * This ID is to identify the channel which has been added to main screen
      */
     private long mChannelId;
 
-    /**
-     * This HashMap will keep the mapping relationship between
-     * channel's publish ID (will be changed in different transaction) and
-     * channel's actual content
-     *
-     * It is designed to toggle channel content's publish status
-     */
-    private static final Map<Long, ChannelContents> sLookupTable = new HashMap<>();
+    /* package */
+    static void initializePlaylists(Context context) {
+        if (sChannelContents == null) {
+
+            sChannelContents = new ArrayList<>();
+            String json = Utils.inputStreamToString(
+                    context.getResources().openRawResource(R.raw.movie));
+
+            /**
+             * Populate playlist from json file
+             */
+            ChannelContents[] channels = new Gson().fromJson(json, ChannelContents[].class);
+            for (int i = 0; i < channels.length; i++) {
+                sChannelContents.add(channels[i]);
+            }
+        }
+    }
 
     /* package */ String getName() {
         return mName;
@@ -126,26 +140,6 @@ public final class ChannelContents {
         return mChannelId;
     }
 
-
-    /* package */ static List<ChannelContents> sChannelContents;
-
-    /* package */ static void initializePlaylists(Context context) {
-        if (sChannelContents == null) {
-
-            sChannelContents = new ArrayList<>();
-            String json = Utils.inputStreamToString(
-                    context.getResources().openRawResource(R.raw.movie));
-
-            /**
-             * Populate playlist from json file
-             */
-            ChannelContents[] channels = new Gson().fromJson(json, ChannelContents[].class);
-            for (int i = 0; i < channels.length; i++) {
-                sChannelContents.add(channels[i]);
-            }
-        }
-    }
-
     /**
      * Async Task to remove channel from home screen
      */
@@ -169,7 +163,7 @@ public final class ChannelContents {
          * @param channelId the publish ID which is assigned by last adding transaction
          */
         private void deleteChannel(Context context, long channelId) {
-            Log.e(TAG, "deleteChannel: " + channelId );
+            Log.e(TAG, "deleteChannel: " + channelId);
             sLookupTable.get(channelId).setChannelUnPublished();
 
             int rowsDeleted = context.getContentResolver().delete(
@@ -193,20 +187,17 @@ public final class ChannelContents {
      */
 
     public static final class CreateChannelInMainScreen extends AsyncTask<ChannelContents, Void, Long> {
+        public static final String CONTENT_ANDROID_MEDIA_TV_PREVIEW_PROGRAM
+                = "content://android.media.tv/preview_program";
         private static final String TAG = "CreateChannelInMainScreen";
-
         private static final String SCHEME = "rowsnewapi";
         private static final String PACKAGE_NAME
                 = "androidx.leanback.supportleanbackshowcase";
         private static final String VIDEO_PLAY_ACTIVITY = "playvideo";
         private static final String MAIN_ACTIVITY = "startapp";
-        public static final String CONTENT_ANDROID_MEDIA_TV_PREVIEW_PROGRAM
-                = "content://android.media.tv/preview_program";
-
+        private static final int ADD_CHANNEL_REQUEST = 1;
         // this object is used ot call startActivityForResult method from this Async Task
         private Activity mActivity;
-
-        private static final int ADD_CHANNEL_REQUEST = 1;
 
         public CreateChannelInMainScreen(Activity context) {
             mActivity = context;

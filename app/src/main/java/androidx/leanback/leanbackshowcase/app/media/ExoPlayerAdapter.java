@@ -18,11 +18,12 @@ package androidx.leanback.leanbackshowcase.app.media;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Handler;
+import android.view.SurfaceHolder;
+
+import androidx.leanback.leanbackshowcase.R;
 import androidx.leanback.media.PlaybackGlueHost;
 import androidx.leanback.media.PlayerAdapter;
 import androidx.leanback.media.SurfaceHolderGlueHost;
-import androidx.leanback.leanbackshowcase.R;
-import android.view.SurfaceHolder;
 
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
@@ -43,11 +44,10 @@ import com.google.android.exoplayer2.util.Util;
 /**
  * This implementation extends the {@link PlayerAdapter} with a {@link SimpleExoPlayer}.
  */
-public class ExoPlayerAdapter extends PlayerAdapter implements ExoPlayer.EventListener{
+public class ExoPlayerAdapter extends PlayerAdapter implements ExoPlayer.EventListener {
 
-    Context mContext;
     final SimpleExoPlayer mPlayer;
-    SurfaceHolderGlueHost mSurfaceHolderGlueHost;
+    final Handler mHandler = new Handler();
     final Runnable mRunnable = new Runnable() {
         @Override
         public void run() {
@@ -56,12 +56,14 @@ public class ExoPlayerAdapter extends PlayerAdapter implements ExoPlayer.EventLi
             mHandler.postDelayed(this, getUpdatePeriod());
         }
     };
-    final Handler mHandler = new Handler();
+    Context mContext;
+    SurfaceHolderGlueHost mSurfaceHolderGlueHost;
     boolean mInitialized = false;
     Uri mMediaSourceUri = null;
     boolean mHasDisplay;
     boolean mBufferingStart;
-    @C.StreamType int mAudioStreamType;
+    @C.StreamType
+    int mAudioStreamType;
 
     /**
      * Constructor.
@@ -246,6 +248,7 @@ public class ExoPlayerAdapter extends PlayerAdapter implements ExoPlayer.EventLi
     /**
      * Set {@link MediaSource} for {@link SimpleExoPlayer}. An app may override this method in order
      * to use different {@link MediaSource}.
+     *
      * @param uri The url of media source
      * @return MediaSource for the player
      */
@@ -271,7 +274,7 @@ public class ExoPlayerAdapter extends PlayerAdapter implements ExoPlayer.EventLi
         mPlayer.setVideoListener(new SimpleExoPlayer.VideoListener() {
             @Override
             public void onVideoSizeChanged(int width, int height, int unappliedRotationDegrees,
-                    float pixelWidthHeightRatio) {
+                                           float pixelWidthHeightRatio) {
                 getCallback().onVideoSizeChanged(ExoPlayerAdapter.this, width, height);
             }
 
@@ -292,28 +295,6 @@ public class ExoPlayerAdapter extends PlayerAdapter implements ExoPlayer.EventLi
         return mInitialized && (mSurfaceHolderGlueHost == null || mHasDisplay);
     }
 
-    /**
-     * Implements {@link SurfaceHolder.Callback} that can then be set on the
-     * {@link PlaybackGlueHost}.
-     */
-    class VideoPlayerSurfaceHolderCallback implements SurfaceHolder.Callback {
-        @Override
-        public void surfaceCreated(SurfaceHolder surfaceHolder) {
-            setDisplay(surfaceHolder);
-        }
-
-        @Override
-        public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i1, int i2) {
-        }
-
-        @Override
-        public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
-            setDisplay(null);
-        }
-    }
-
-    // ExoPlayer Event Listeners
-
     @Override
     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
         mBufferingStart = false;
@@ -330,6 +311,8 @@ public class ExoPlayerAdapter extends PlayerAdapter implements ExoPlayer.EventLi
         }
         notifyBufferingStartEnd();
     }
+
+    // ExoPlayer Event Listeners
 
     @Override
     public void onPlayerError(ExoPlaybackException error) {
@@ -353,5 +336,25 @@ public class ExoPlayerAdapter extends PlayerAdapter implements ExoPlayer.EventLi
 
     @Override
     public void onPositionDiscontinuity() {
+    }
+
+    /**
+     * Implements {@link SurfaceHolder.Callback} that can then be set on the
+     * {@link PlaybackGlueHost}.
+     */
+    class VideoPlayerSurfaceHolderCallback implements SurfaceHolder.Callback {
+        @Override
+        public void surfaceCreated(SurfaceHolder surfaceHolder) {
+            setDisplay(surfaceHolder);
+        }
+
+        @Override
+        public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i1, int i2) {
+        }
+
+        @Override
+        public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
+            setDisplay(null);
+        }
     }
 }

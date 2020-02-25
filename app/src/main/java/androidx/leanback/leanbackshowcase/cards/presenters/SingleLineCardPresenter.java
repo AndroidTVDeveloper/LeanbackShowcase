@@ -16,6 +16,7 @@ package androidx.leanback.leanbackshowcase.cards.presenters;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+
 import androidx.leanback.leanbackshowcase.R;
 import androidx.leanback.leanbackshowcase.models.Card;
 import androidx.leanback.widget.ImageCardView;
@@ -31,10 +32,11 @@ public class SingleLineCardPresenter extends ImageCardViewPresenter {
         super(context, R.style.SingleLineCardTheme);
     }
 
-    @Override public void onBindViewHolder(Card card, ImageCardView cardView) {
+    @Override
+    public void onBindViewHolder(Card card, ImageCardView cardView) {
         super.onBindViewHolder(card, cardView);
         TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(R.styleable.lbImageCardView);
-        android.util.Log.d("SHAAN", "lbImageCardViewType ="+typedArray.getInt(R.styleable.lbImageCardView_lbImageCardViewType, -1));
+        android.util.Log.d("SHAAN", "lbImageCardViewType =" + typedArray.getInt(R.styleable.lbImageCardView_lbImageCardViewType, -1));
         cardView.setInfoAreaBackgroundColor(card.getFooterColor());
     }
 

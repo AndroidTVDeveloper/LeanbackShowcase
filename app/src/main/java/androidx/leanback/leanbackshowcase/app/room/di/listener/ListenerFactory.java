@@ -16,12 +16,13 @@
 
 package androidx.leanback.leanbackshowcase.app.room.di.listener;
 
+import android.view.View;
+
 import androidx.leanback.widget.OnItemViewClickedListener;
 import androidx.leanback.widget.OnItemViewSelectedListener;
 
-import android.view.View;
-
 import java.util.Map;
+
 import javax.inject.Inject;
 
 public class ListenerFactory {
@@ -32,8 +33,8 @@ public class ListenerFactory {
 
     @Inject
     public ListenerFactory(Map<Class, OnItemViewClickedListener> onItemViewClickedListenerMap,
-            Map<Class, OnItemViewSelectedListener> onItemViewSelectedListenerMap,
-            Map<Class, View.OnClickListener> viewOnClickListenerMap) {
+                           Map<Class, OnItemViewSelectedListener> onItemViewSelectedListenerMap,
+                           Map<Class, View.OnClickListener> viewOnClickListenerMap) {
         mOnItemViewClickedListenerMap = onItemViewClickedListenerMap;
         mOnItemViewSelectedListenerMap = onItemViewSelectedListenerMap;
         mViewOnClickListenerMap = viewOnClickListenerMap;

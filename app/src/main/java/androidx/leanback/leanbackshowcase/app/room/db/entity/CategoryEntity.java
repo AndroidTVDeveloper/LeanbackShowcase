@@ -16,10 +16,10 @@
 
 package androidx.leanback.leanbackshowcase.app.room.db.entity;
 
+import androidx.leanback.leanbackshowcase.app.room.db.constant.DatabaseColumnConstant;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-import androidx.leanback.leanbackshowcase.app.room.db.constant.DatabaseColumnConstant;
 
 
 @Entity(tableName = DatabaseColumnConstant.CategoryEntry.TABLE_NAME)

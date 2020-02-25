@@ -31,11 +31,15 @@ public class CardRow {
     // divider
     public static final int TYPE_DIVIDER = 2;
 
-    @SerializedName("type") private int mType = TYPE_DEFAULT;
+    @SerializedName("type")
+    private int mType = TYPE_DEFAULT;
     // Used to determine whether the row shall use shadows when displaying its cards or not.
-    @SerializedName("shadow") private boolean mShadow = true;
-    @SerializedName("title") private String mTitle;
-    @SerializedName("cards") private List<Card> mCards;
+    @SerializedName("shadow")
+    private boolean mShadow = true;
+    @SerializedName("title")
+    private String mTitle;
+    @SerializedName("cards")
+    private List<Card> mCards;
 
     public int getType() {
         return mType;

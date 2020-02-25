@@ -18,6 +18,7 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+
 import androidx.leanback.app.GuidedStepFragment;
 
 /**
@@ -25,7 +26,8 @@ import androidx.leanback.app.GuidedStepFragment;
  */
 public class DialogExampleActivity extends Activity {
 
-    @Override public void onCreate(Bundle savedInstanceState) {
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#21272A")));
 

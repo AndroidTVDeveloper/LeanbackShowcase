@@ -16,12 +16,13 @@ package androidx.leanback.leanbackshowcase.app.wizard;
 
 import android.app.FragmentManager;
 import android.os.Bundle;
+import android.text.TextUtils;
+
 import androidx.annotation.NonNull;
 import androidx.leanback.leanbackshowcase.R;
 import androidx.leanback.widget.GuidanceStylist;
 import androidx.leanback.widget.GuidedAction;
 import androidx.leanback.widget.GuidedDatePickerAction;
-import android.text.TextUtils;
 
 import java.util.Calendar;
 import java.util.List;
@@ -33,6 +34,17 @@ public class WizardNewPaymentStepFragment extends WizardExampleBaseStepFragment 
 
     private static final int ACTION_ID_CARD_NUMBER = 1;
     private static final int ACTION_ID_PAYMENT_EXP = ACTION_ID_CARD_NUMBER + 1;
+
+    private static boolean isCardNumberValid(CharSequence number) {
+        return (TextUtils.isDigitsOnly(number) && number.length() == 16);
+    }
+
+    private static boolean isExpDateValid(GuidedAction dateAction) {
+        long date = ((GuidedDatePickerAction) dateAction).getDate();
+        Calendar c = Calendar.getInstance();
+        c.setTimeInMillis(date);
+        return Calendar.getInstance().before(c);
+    }
 
     @NonNull
     @Override
@@ -49,20 +61,20 @@ public class WizardNewPaymentStepFragment extends WizardExampleBaseStepFragment 
     @Override
     public void onCreateActions(List<GuidedAction> actions, Bundle savedInstanceState) {
         actions.add(new GuidedAction.Builder(getActivity())
-                        .id(ACTION_ID_CARD_NUMBER)
-                        .title(R.string.wizard_example_input_card)
-                        .editTitle("")
-                        .description(R.string.wizard_example_input_card)
-                        .editDescription("Card number")
-                        .editable(true)
-                        .build()
+                .id(ACTION_ID_CARD_NUMBER)
+                .title(R.string.wizard_example_input_card)
+                .editTitle("")
+                .description(R.string.wizard_example_input_card)
+                .editDescription("Card number")
+                .editable(true)
+                .build()
         );
 
         actions.add(new GuidedDatePickerAction.Builder(getActivity())
-                        .id(ACTION_ID_PAYMENT_EXP)
-                        .title(R.string.wizard_example_expiration_date)
-                        .datePickerFormat("MY")
-                        .build()
+                .id(ACTION_ID_PAYMENT_EXP)
+                .title(R.string.wizard_example_expiration_date)
+                .datePickerFormat("MY")
+                .build()
         );
     }
 
@@ -70,8 +82,8 @@ public class WizardNewPaymentStepFragment extends WizardExampleBaseStepFragment 
     public void onCreateButtonActions(@NonNull List<GuidedAction> actions,
                                       Bundle savedInstanceState) {
         actions.add(new GuidedAction.Builder(getActivity())
-                        .clickAction(GuidedAction.ACTION_ID_OK)
-                        .build()
+                .clickAction(GuidedAction.ACTION_ID_OK)
+                .build()
         );
         actions.get(actions.size() - 1).setEnabled(false);
     }
@@ -103,7 +115,7 @@ public class WizardNewPaymentStepFragment extends WizardExampleBaseStepFragment 
                 String last4Digits = cardNumber.subSequence(cardNumber.length() - 4,
                         cardNumber.length()).toString();
 
-                if ( (Integer.parseInt(last4Digits) & 1) == 0 )
+                if ((Integer.parseInt(last4Digits) & 1) == 0)
                     action.setDescription(getString(R.string.wizard_example_visa,
                             last4Digits));
                 else
@@ -134,16 +146,5 @@ public class WizardNewPaymentStepFragment extends WizardExampleBaseStepFragment 
     private void updateOkButton(boolean enabled) {
         findButtonActionById(GuidedAction.ACTION_ID_OK).setEnabled(enabled);
         notifyButtonActionChanged(findButtonActionPositionById(GuidedAction.ACTION_ID_OK));
-    }
-
-    private static boolean isCardNumberValid(CharSequence number) {
-        return (TextUtils.isDigitsOnly(number) && number.length() == 16);
-    }
-
-    private static boolean isExpDateValid(GuidedAction dateAction) {
-        long date = ((GuidedDatePickerAction) dateAction).getDate();
-        Calendar c = Calendar.getInstance();
-        c.setTimeInMillis(date);
-        return Calendar.getInstance().before(c);
     }
 }

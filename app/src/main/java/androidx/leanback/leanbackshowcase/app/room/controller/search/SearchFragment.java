@@ -16,12 +16,12 @@
 
 package androidx.leanback.leanbackshowcase.app.room.controller.search;
 
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.View;
+
 import androidx.annotation.Nullable;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.leanback.leanbackshowcase.R;
 import androidx.leanback.leanbackshowcase.app.room.adapter.ListAdapter;
 import androidx.leanback.leanbackshowcase.app.room.db.entity.VideoEntity;
@@ -33,15 +33,18 @@ import androidx.leanback.leanbackshowcase.app.room.viewmodel.VideosViewModel;
 import androidx.leanback.widget.ArrayObjectAdapter;
 import androidx.leanback.widget.ObjectAdapter;
 import androidx.leanback.widget.OnItemViewClickedListener;
-import androidx.core.content.res.ResourcesCompat;
-import android.text.TextUtils;
-import android.view.View;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 
-import dagger.android.support.AndroidSupportInjection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+
 import javax.inject.Inject;
+
+import dagger.android.support.AndroidSupportInjection;
 
 public class SearchFragment extends androidx.leanback.app.SearchSupportFragment
         implements androidx.leanback.app.SearchSupportFragment.SearchResultProvider,

@@ -16,6 +16,7 @@ package androidx.leanback.leanbackshowcase.app.wizard;
 
 import android.os.Bundle;
 import android.os.Handler;
+
 import androidx.annotation.NonNull;
 import androidx.leanback.app.GuidedStepFragment;
 import androidx.leanback.leanbackshowcase.R;
@@ -34,6 +35,14 @@ public class WizardExample3rdStepFragment extends WizardExampleBaseStepFragment 
 
     private static final int ACTION_ID_PROCESSING = 1;
     private final Handler mFakeHttpHandler = new Handler();
+    private final Runnable fakeHttpRequestRunnable = new Runnable() {
+        @Override
+        public void run() {
+            GuidedStepFragment fragment = new WizardExample4thStepFragment();
+            fragment.setArguments(getArguments());
+            add(getFragmentManager(), fragment);
+        }
+    };
 
     @Override
     public void onStart() {
@@ -86,14 +95,5 @@ public class WizardExample3rdStepFragment extends WizardExampleBaseStepFragment 
                 .build();
         actions.add(action);
     }
-
-    private final Runnable fakeHttpRequestRunnable = new Runnable() {
-        @Override
-        public void run() {
-            GuidedStepFragment fragment = new WizardExample4thStepFragment();
-            fragment.setArguments(getArguments());
-            add(getFragmentManager(), fragment);
-        }
-    };
 
 }

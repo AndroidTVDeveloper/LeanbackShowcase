@@ -16,18 +16,18 @@
 
 package androidx.leanback.leanbackshowcase.app.room.controller.detail;
 
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.View;
+import android.widget.Toast;
+
 import androidx.annotation.Nullable;
 import androidx.leanback.app.BackgroundManager;
 import androidx.leanback.app.DetailsSupportFragment;
 import androidx.leanback.app.DetailsSupportFragmentBackgroundController;
-import androidx.leanback.media.MediaPlayerGlue;
 import androidx.leanback.leanbackshowcase.R;
 import androidx.leanback.leanbackshowcase.app.room.adapter.ListAdapter;
 import androidx.leanback.leanbackshowcase.app.room.config.AppConfiguration;
@@ -43,6 +43,7 @@ import androidx.leanback.leanbackshowcase.app.room.di.adapter.qualifier.ListAdap
 import androidx.leanback.leanbackshowcase.app.room.di.subcomponentinjection.DaggerApplicationComponent;
 import androidx.leanback.leanbackshowcase.app.room.network.NetworkLiveData;
 import androidx.leanback.leanbackshowcase.app.room.viewmodel.VideosViewModel;
+import androidx.leanback.media.MediaPlayerGlue;
 import androidx.leanback.widget.Action;
 import androidx.leanback.widget.ArrayObjectAdapter;
 import androidx.leanback.widget.DetailsOverviewRow;
@@ -51,17 +52,20 @@ import androidx.leanback.widget.ListRow;
 import androidx.leanback.widget.OnActionClickedListener;
 import androidx.leanback.widget.OnItemViewClickedListener;
 import androidx.leanback.widget.PresenterSelector;
-import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.View;
-import android.widget.Toast;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
+
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+
 import javax.inject.Inject;
 
 
@@ -269,40 +273,6 @@ public class LiveDataDetailViewWithVideoBackgroundFragment extends DetailsSuppor
                 });
     }
 
-
-    // Action Listener is dependent on Runtime information. Cannot be injected in the Listener's
-    // module
-    private final class ActionClickedListener implements OnActionClickedListener {
-
-        @Override
-        public void onActionClicked(Action action) {
-            if (action == mActionRent) {
-
-                new AsyncTask<Void, Void, Void>() {
-                    @Override
-                    protected Void doInBackground(Void... voids) {
-                        if (AppConfiguration.IS_RENTING_OPERATION_DELAY_ENABLED) {
-                            addDelay(2000L);
-                        }
-
-                        // update the database with rented field
-                        mViewModel.updateDatabase(mObservedVideo, RENTED, "");
-                        return null;
-                    }
-                }.execute();
-
-                getActivity().findViewById(R.id.renting_progressbar).setVisibility(View.VISIBLE);
-                getActivity().findViewById(R.id.loading_renting).setVisibility(View.VISIBLE);
-            } else if (action == mActionPlay) {
-                mDetailsBgController.switchToVideo();
-            } else if (action == mActionPreview) {
-                mDetailsBgController.switchToVideo();
-            } else if (action == mActionLoading) {
-                Toast.makeText(getActivity(), "Loading...", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
-
     private void loadAndSetVideoCardImage() {
         String loadedUri = findLocalContentUriOrNetworkUrl(CARD);
         Glide.with(this)
@@ -312,7 +282,7 @@ public class LiveDataDetailViewWithVideoBackgroundFragment extends DetailsSuppor
                 .into(new SimpleTarget<Bitmap>() {
                     @Override
                     public void onResourceReady(final Bitmap resource,
-                            Transition<? super Bitmap> glideAnimation) {
+                                                Transition<? super Bitmap> glideAnimation) {
                         mDescriptionOverviewRow.setImageBitmap(getActivity(), resource);
                     }
                 });
@@ -361,6 +331,39 @@ public class LiveDataDetailViewWithVideoBackgroundFragment extends DetailsSuppor
         } catch (InterruptedException e) {
             if (DEBUG) {
                 Log.e(TAG, "addDelay: ", e);
+            }
+        }
+    }
+
+    // Action Listener is dependent on Runtime information. Cannot be injected in the Listener's
+    // module
+    private final class ActionClickedListener implements OnActionClickedListener {
+
+        @Override
+        public void onActionClicked(Action action) {
+            if (action == mActionRent) {
+
+                new AsyncTask<Void, Void, Void>() {
+                    @Override
+                    protected Void doInBackground(Void... voids) {
+                        if (AppConfiguration.IS_RENTING_OPERATION_DELAY_ENABLED) {
+                            addDelay(2000L);
+                        }
+
+                        // update the database with rented field
+                        mViewModel.updateDatabase(mObservedVideo, RENTED, "");
+                        return null;
+                    }
+                }.execute();
+
+                getActivity().findViewById(R.id.renting_progressbar).setVisibility(View.VISIBLE);
+                getActivity().findViewById(R.id.loading_renting).setVisibility(View.VISIBLE);
+            } else if (action == mActionPlay) {
+                mDetailsBgController.switchToVideo();
+            } else if (action == mActionPreview) {
+                mDetailsBgController.switchToVideo();
+            } else if (action == mActionLoading) {
+                Toast.makeText(getActivity(), "Loading...", Toast.LENGTH_SHORT).show();
             }
         }
     }

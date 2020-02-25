@@ -18,13 +18,14 @@ package androidx.leanback.leanbackshowcase.app.room.di.display;
 
 import android.app.Activity;
 import android.graphics.drawable.Drawable;
+import android.util.DisplayMetrics;
+
 import androidx.leanback.app.BackgroundManager;
 import androidx.leanback.leanbackshowcase.R;
 import androidx.leanback.leanbackshowcase.app.room.adapter.ListAdapter;
 import androidx.leanback.leanbackshowcase.app.room.di.scope.PerFragment;
 import androidx.leanback.leanbackshowcase.app.room.ui.LiveDataRowPresenter;
 import androidx.leanback.widget.ListRow;
-import android.util.DisplayMetrics;
 
 import com.bumptech.glide.request.RequestOptions;
 

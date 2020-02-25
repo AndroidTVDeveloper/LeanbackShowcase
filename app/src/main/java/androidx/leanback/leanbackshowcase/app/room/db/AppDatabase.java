@@ -14,16 +14,16 @@
 
 package androidx.leanback.leanbackshowcase.app.room.db;
 
-import androidx.room.Database;
-import androidx.room.RoomDatabase;
 import androidx.leanback.leanbackshowcase.app.room.db.dao.CategoryDao;
 import androidx.leanback.leanbackshowcase.app.room.db.dao.VideoDao;
 import androidx.leanback.leanbackshowcase.app.room.db.entity.CategoryEntity;
 import androidx.leanback.leanbackshowcase.app.room.db.entity.VideoEntity;
+import androidx.room.Database;
+import androidx.room.RoomDatabase;
 
 
 @Database(entities = {VideoEntity.class, CategoryEntity.class}, version = 1, exportSchema = false)
-public abstract class AppDatabase extends RoomDatabase{
+public abstract class AppDatabase extends RoomDatabase {
     public static final String DATABASE_NAME = "leanback_showcase.db";
 
     public abstract VideoDao videoDao();

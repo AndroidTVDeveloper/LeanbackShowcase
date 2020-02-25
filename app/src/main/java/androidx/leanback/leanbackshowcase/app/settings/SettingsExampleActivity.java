@@ -16,6 +16,7 @@ package androidx.leanback.leanbackshowcase.app.settings;
 
 import android.app.Activity;
 import android.os.Bundle;
+
 import androidx.leanback.leanbackshowcase.R;
 
 /*
@@ -23,7 +24,8 @@ import androidx.leanback.leanbackshowcase.R;
  */
 public class SettingsExampleActivity extends Activity {
 
-    @Override public void onCreate(Bundle savedInstanceState) {
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings_example);
     }

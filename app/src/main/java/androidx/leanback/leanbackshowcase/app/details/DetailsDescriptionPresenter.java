@@ -16,14 +16,16 @@
 package androidx.leanback.leanbackshowcase.app.details;
 
 import android.content.Context;
-import androidx.leanback.leanbackshowcase.R;
-import androidx.leanback.leanbackshowcase.models.DetailedCard;
-import androidx.leanback.leanbackshowcase.utils.ResourceCache;
-import androidx.leanback.widget.Presenter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import androidx.leanback.leanbackshowcase.R;
+import androidx.leanback.leanbackshowcase.models.DetailedCard;
+import androidx.leanback.leanbackshowcase.utils.ResourceCache;
+import androidx.leanback.widget.Presenter;
+
 import javax.inject.Inject;
 
 /**
@@ -40,12 +42,14 @@ public class DetailsDescriptionPresenter extends Presenter {
         mContext = context;
     }
 
-    @Override public ViewHolder onCreateViewHolder(ViewGroup parent) {
+    @Override
+    public ViewHolder onCreateViewHolder(ViewGroup parent) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.detail_view_content, null);
         return new ViewHolder(view);
     }
 
-    @Override public void onBindViewHolder(ViewHolder viewHolder, Object item) {
+    @Override
+    public void onBindViewHolder(ViewHolder viewHolder, Object item) {
         TextView primaryText = mResourceCache.getViewById(viewHolder.view, R.id.primary_text);
         TextView sndText1 = mResourceCache.getViewById(viewHolder.view, R.id.secondary_text_first);
         TextView sndText2 = mResourceCache.getViewById(viewHolder.view, R.id.secondary_text_second);
@@ -58,7 +62,8 @@ public class DetailsDescriptionPresenter extends Presenter {
         extraText.setText(card.getText());
     }
 
-    @Override public void onUnbindViewHolder(ViewHolder viewHolder) {
+    @Override
+    public void onUnbindViewHolder(ViewHolder viewHolder) {
         // Nothing to do here.
     }
 }

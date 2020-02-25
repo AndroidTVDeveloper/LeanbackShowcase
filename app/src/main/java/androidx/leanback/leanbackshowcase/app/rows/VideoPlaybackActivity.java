@@ -20,28 +20,29 @@ import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
+
 import androidx.leanback.leanbackshowcase.R;
 import androidx.leanback.leanbackshowcase.app.media.MediaMetaData;
 import androidx.leanback.leanbackshowcase.app.media.VideoConsumptionExampleFragment;
 import androidx.leanback.leanbackshowcase.app.media.VideoExampleActivity;
-import android.text.TextUtils;
 
 import java.util.List;
 
 /**
  * VideoPlaybackActivity for video playback that loads PlaybackFragment
- *
+ * <p>
  * This activity can be invoked in two scenarios,
  * 1. In DynamicRowFragment, when the video clips is clicked, this activity will be
- *    fired up to play the video
+ * fired up to play the video
  * 2. When the channel is added to the home screen, click the video content will also start
- *    since this activity can receive the broadcast which is declared in AndroidManifest.xml
- *
- *    <data
- *        android:scheme="rowsnewapi"
- *        android:host="androidx.leanback.supportleanbackshowcase"
- *        android:pathPrefix="/playvideo"
- *        />
+ * since this activity can receive the broadcast which is declared in AndroidManifest.xml
+ * <p>
+ * <data
+ * android:scheme="rowsnewapi"
+ * android:host="androidx.leanback.supportleanbackshowcase"
+ * android:pathPrefix="/playvideo"
+ * />
  */
 public class VideoPlaybackActivity extends Activity {
 
@@ -68,7 +69,7 @@ public class VideoPlaybackActivity extends Activity {
      * So we can have unified data transmission interface without type casting on the fragment
      * side
      *
-     * @param  videoContent The video content you want to convert to MediaMetaData.
+     * @param videoContent The video content you want to convert to MediaMetaData.
      * @return MediaMetaData The conversion result.
      */
     private MediaMetaData videoContentToMediaMetaData(VideoContent videoContent) {

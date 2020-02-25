@@ -26,7 +26,7 @@ import javax.inject.Singleton;
 
 
 @Singleton
-public class ViewModelFactory implements ViewModelProvider.Factory{
+public class ViewModelFactory implements ViewModelProvider.Factory {
     private final Map<Class<? extends ViewModel>, ViewModel> creators;
 
     @Inject
@@ -37,6 +37,6 @@ public class ViewModelFactory implements ViewModelProvider.Factory{
     @SuppressWarnings("unchecked")
     @Override
     public <T extends ViewModel> T create(Class<T> modelClass) {
-        return (T)creators.get(modelClass);
+        return (T) creators.get(modelClass);
     }
 }

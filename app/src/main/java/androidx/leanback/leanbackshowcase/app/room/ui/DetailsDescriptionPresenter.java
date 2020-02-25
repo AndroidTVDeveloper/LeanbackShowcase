@@ -73,6 +73,6 @@ public class DetailsDescriptionPresenter extends AbstractDetailsDescriptionPrese
         return videoEntity.getVideoCardImageLocalStorageUrl().isEmpty()
                 && videoEntity.getVideoBgImageLocalStorageUrl().isEmpty()
                 && videoEntity.getVideoLocalStorageUrl().isEmpty()
-                && !videoEntity.getStatus().equals("downloading") ;
+                && !videoEntity.getStatus().equals("downloading");
     }
 }

@@ -21,10 +21,11 @@ import android.app.Application;
 
 import androidx.leanback.leanbackshowcase.app.room.di.androidinject.AppInjector;
 
+import javax.inject.Inject;
+
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.HasActivityInjector;
-import javax.inject.Inject;
 
 /**
  * Customized application class.
@@ -32,15 +33,14 @@ import javax.inject.Inject;
 public class SampleApplication extends Application implements HasActivityInjector {
 
     private static SampleApplication sApp;
+    @Inject
+    DispatchingAndroidInjector<Activity> dispatchingAndroidInjector;
 
     // This class will be instantiated once when the application is started, no need to design it
     // as a singleton on purpose.
     public static SampleApplication getInstance() {
         return sApp;
     }
-
-    @Inject
-    DispatchingAndroidInjector<Activity> dispatchingAndroidInjector;
 
     @Override
     public void onCreate() {

@@ -16,14 +16,14 @@
 
 package androidx.leanback.leanbackshowcase.app.room.db.dao;
 
+import androidx.leanback.leanbackshowcase.app.room.db.constant.DatabaseColumnConstant;
+import androidx.leanback.leanbackshowcase.app.room.db.entity.VideoEntity;
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
-import androidx.leanback.leanbackshowcase.app.room.db.constant.DatabaseColumnConstant;
-import androidx.leanback.leanbackshowcase.app.room.db.entity.VideoEntity;
 
 import java.util.List;
 
@@ -44,10 +44,10 @@ public interface VideoDao {
     LiveData<List<VideoEntity>> loadVideoInSameCateogry(String category);
 
     @Query("SELECT * FROM " + DatabaseColumnConstant.VideoEntry.TABLE_NAME
-            + " WHERE "+ DatabaseColumnConstant.VideoEntry.COLUMN_NAME
+            + " WHERE " + DatabaseColumnConstant.VideoEntry.COLUMN_NAME
             + " LIKE " + ":queryMessage"
             + " OR " + DatabaseColumnConstant.VideoEntry.COLUMN_CATEGORY
-            +" LIKE " + ":queryMessage")
+            + " LIKE " + ":queryMessage")
     LiveData<List<VideoEntity>> searchVideos(String queryMessage);
 
     @Update(onConflict = OnConflictStrategy.REPLACE)

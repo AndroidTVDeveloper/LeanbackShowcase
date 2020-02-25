@@ -17,7 +17,9 @@
 package androidx.leanback.leanbackshowcase.app.room.di.androidinjectorannotation;
 
 import android.app.Activity;
+
 import androidx.leanback.leanbackshowcase.app.room.controller.overview.LiveDataRowsActivity;
+
 import dagger.Binds;
 import dagger.Module;
 

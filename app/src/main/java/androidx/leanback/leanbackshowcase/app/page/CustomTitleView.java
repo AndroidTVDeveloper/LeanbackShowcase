@@ -16,13 +16,14 @@ package androidx.leanback.leanbackshowcase.app.page;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import androidx.leanback.leanbackshowcase.R;
-import androidx.leanback.widget.TitleViewAdapter;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.leanback.leanbackshowcase.R;
+import androidx.leanback.widget.TitleViewAdapter;
 
 /**
  * Custom title view to be used in {@link androidx.leanback.app.BrowseFragment}.
@@ -88,7 +89,7 @@ public class CustomTitleView extends RelativeLayout implements TitleViewAdapter.
 
     public CustomTitleView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        View root  = LayoutInflater.from(context).inflate(R.layout.custom_titleview, this);
+        View root = LayoutInflater.from(context).inflate(R.layout.custom_titleview, this);
         mTitleView = root.findViewById(R.id.title_tv);
         mAnalogClockView = root.findViewById(R.id.clock);
         mSearchOrbView = root.findViewById(R.id.search_orb);

@@ -19,10 +19,11 @@ package androidx.leanback.leanbackshowcase.app.room.di.androidinject;
 import android.app.Activity;
 import android.app.Application.ActivityLifecycleCallbacks;
 import android.os.Bundle;
-import androidx.leanback.leanbackshowcase.app.room.controller.app.SampleApplication;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
+import androidx.leanback.leanbackshowcase.app.room.controller.app.SampleApplication;
 
 import dagger.android.AndroidInjection;
 import dagger.android.support.AndroidSupportInjection;
@@ -32,12 +33,12 @@ import dagger.android.support.HasSupportFragmentInjector;
 /**
  * The automated dependency injector for android related dependency injection discussed in the
  * comments of {@link ActivityBuildersModule}.
- *
+ * <p>
  * The injector should be initialized in the application class firstly (which means the application
  * will be injected by the App component and can return the DispatchAndroidInjector for further
  * processing.). Then it will set up a callback based on activity's lifecycle stage to process the
  * activity accordingly.
- *
+ * <p>
  * When activity is created, (before the call of super.onCreate()) the dependency injection will
  * be performed immediately.
  */
@@ -87,16 +88,16 @@ public class AppInjector {
 
     /**
      * The strategy for automated dependency injection is:
-     *
-     *   If this activity has implemented HasSupportFragmentInjector interfacea which means it has
-     *   to return the DispatchInjector through overriding public AndroidInjector<Fragment>
-     *   fragmentInjector() method to return the @Inject DispatchInjector. Then this activity must
-     *   be processed with the AndroidInjection by calling the AndroidInjection.inject method.
-     *
-     *   If the activity is extended from the FragmentActivity, then we will set up the dependency
-     *   injection for all the fragments by instrumenting the AndroidInjection.inject method at
-     *   the beginning of fragment's creation. Since the fragment takes the main responsibility on
-     *   UI rendering.
+     * <p>
+     * If this activity has implemented HasSupportFragmentInjector interfacea which means it has
+     * to return the DispatchInjector through overriding public AndroidInjector<Fragment>
+     * fragmentInjector() method to return the @Inject DispatchInjector. Then this activity must
+     * be processed with the AndroidInjection by calling the AndroidInjection.inject method.
+     * <p>
+     * If the activity is extended from the FragmentActivity, then we will set up the dependency
+     * injection for all the fragments by instrumenting the AndroidInjection.inject method at
+     * the beginning of fragment's creation. Since the fragment takes the main responsibility on
+     * UI rendering.
      *
      * @param activity activity to be processed.
      */
@@ -117,7 +118,7 @@ public class AppInjector {
                             new FragmentManager.FragmentLifecycleCallbacks() {
                                 @Override
                                 public void onFragmentCreated(FragmentManager fm, Fragment f,
-                                        Bundle savedInstanceState) {
+                                                              Bundle savedInstanceState) {
                                     if (f instanceof Injectable) {
 
                                         // The injector only contains the provision method for the

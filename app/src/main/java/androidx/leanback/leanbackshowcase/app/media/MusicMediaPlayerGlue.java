@@ -28,22 +28,24 @@ package androidx.leanback.leanbackshowcase.app.media;
  * the License.
  *
  */
+
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.net.Uri;
 import android.os.IBinder;
+import android.util.Log;
 
 import androidx.leanback.widget.Action;
 import androidx.leanback.widget.ArrayObjectAdapter;
 import androidx.leanback.widget.PlaybackControlsRow;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**<p>>
+/**
+ * <p>>
  * This glue extends the {@link MediaPlayerGlue} and handles all the heavy-lifting of the
  * interactions between the fragment, playback controls, and the music service. It starts and
  * connects to a music service which will be running in the background. The music service notifies
@@ -56,10 +58,10 @@ public class MusicMediaPlayerGlue extends MediaPlayerGlue implements
 
     private static final String TAG = "MusicMediaPlayerGlue";
     private final Context mContext;
-    private List<MediaMetaData> mMediaMetaDataList = new ArrayList<>();
     boolean mPendingServiceListUpdate = false; // flag indicating that mMediaMetaDataList is changed and
-                                            // the media item list in the service needs to be updated
-                                            // next time one of its APIs is used
+    private List<MediaMetaData> mMediaMetaDataList = new ArrayList<>();
+    // the media item list in the service needs to be updated
+    // next time one of its APIs is used
     private MusicPlaybackService mPlaybackService;
     private boolean mServiceCallbackRegistered = false;
     private boolean mOnBindServiceHasBeenCalled = false;
@@ -102,6 +104,26 @@ public class MusicMediaPlayerGlue extends MediaPlayerGlue implements
         mContext = context;
 
         startAndBindToServiceIfNeeded();
+    }
+
+    public static int mapActionIndexToServiceRepeatState(int index) {
+        if (index == PlaybackControlsRow.RepeatAction.ONE) {
+            return MusicPlaybackService.MEDIA_ACTION_REPEAT_ONE;
+        } else if (index == PlaybackControlsRow.RepeatAction.ALL) {
+            return MusicPlaybackService.MEDIA_ACTION_REPEAT_ALL;
+        } else {
+            return MusicPlaybackService.MEDIA_ACTION_NO_REPEAT;
+        }
+    }
+
+    public static int mapServiceRepeatStateToActionIndex(int serviceRepeatState) {
+        if (serviceRepeatState == MusicPlaybackService.MEDIA_ACTION_REPEAT_ONE) {
+            return PlaybackControlsRow.RepeatAction.ONE;
+        } else if (serviceRepeatState == MusicPlaybackService.MEDIA_ACTION_REPEAT_ALL) {
+            return PlaybackControlsRow.RepeatAction.ALL;
+        } else {
+            return PlaybackControlsRow.RepeatAction.NONE;
+        }
     }
 
     public boolean isPlaybackServiceConnected() {
@@ -161,6 +183,7 @@ public class MusicMediaPlayerGlue extends MediaPlayerGlue implements
             mServiceCallbackRegistered = false;
         }
     }
+
     /**
      * Unbinds glue from the playback service. Called when the fragment is destroyed (pressing back)
      */
@@ -169,7 +192,8 @@ public class MusicMediaPlayerGlue extends MediaPlayerGlue implements
         mContext.unbindService(mPlaybackServiceConnection);
     }
 
-    @Override public void onActionClicked(Action action) {
+    @Override
+    public void onActionClicked(Action action) {
         // If either 'Shuffle' or 'Repeat' has been clicked we need to make sure the acitons index
         // is incremented and the UI updated such that we can display the new state.
         super.onActionClicked(action);
@@ -181,45 +205,30 @@ public class MusicMediaPlayerGlue extends MediaPlayerGlue implements
         }
     }
 
-    @Override public boolean isMediaPlaying() {
+    @Override
+    public boolean isMediaPlaying() {
         return (mPlaybackService != null) && mPlaybackService.isPlaying();
     }
 
-    @Override public int getMediaDuration() {
+    @Override
+    public int getMediaDuration() {
         return (mPlaybackService != null) ? mPlaybackService.getDuration() : 0;
     }
 
-    @Override public int getCurrentPosition() {
+    @Override
+    public int getCurrentPosition() {
         return (mPlaybackService != null) ? mPlaybackService.getCurrentPosition() : 0;
     }
 
-    @Override public void play(int speed) {
+    @Override
+    public void play(int speed) {
         prepareAndPlay(mMediaMetaData);
     }
 
-    @Override public void pause() {
+    @Override
+    public void pause() {
         if (mPlaybackService != null) {
             mPlaybackService.pause();
-        }
-    }
-
-    public static int mapActionIndexToServiceRepeatState(int index) {
-        if (index == PlaybackControlsRow.RepeatAction.ONE) {
-            return MusicPlaybackService.MEDIA_ACTION_REPEAT_ONE;
-        } else if (index == PlaybackControlsRow.RepeatAction.ALL) {
-            return MusicPlaybackService.MEDIA_ACTION_REPEAT_ALL;
-        } else {
-            return MusicPlaybackService.MEDIA_ACTION_NO_REPEAT;
-        }
-    }
-
-    public static int mapServiceRepeatStateToActionIndex(int serviceRepeatState) {
-        if (serviceRepeatState == MusicPlaybackService.MEDIA_ACTION_REPEAT_ONE) {
-            return PlaybackControlsRow.RepeatAction.ONE;
-        } else if (serviceRepeatState == MusicPlaybackService.MEDIA_ACTION_REPEAT_ALL) {
-            return PlaybackControlsRow.RepeatAction.ALL;
-        } else {
-            return PlaybackControlsRow.RepeatAction.NONE;
         }
     }
 

@@ -17,16 +17,18 @@
 package androidx.leanback.leanbackshowcase.app.room.viewmodel;
 
 import android.app.Application;
+
 import androidx.arch.core.util.Function;
+import androidx.leanback.leanbackshowcase.app.room.db.entity.CategoryEntity;
+import androidx.leanback.leanbackshowcase.app.room.db.entity.VideoEntity;
+import androidx.leanback.leanbackshowcase.app.room.db.repo.VideosRepository;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
-import androidx.leanback.leanbackshowcase.app.room.db.repo.VideosRepository;
-import androidx.leanback.leanbackshowcase.app.room.db.entity.CategoryEntity;
-import androidx.leanback.leanbackshowcase.app.room.db.entity.VideoEntity;
 
 import java.util.List;
+
 import javax.inject.Inject;
 
 public class VideosViewModel extends AndroidViewModel {

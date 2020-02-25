@@ -17,8 +17,8 @@
 package androidx.leanback.leanbackshowcase.app.room.di.androidinject;
 
 import androidx.leanback.leanbackshowcase.app.room.controller.search.SearchFragment;
-
 import androidx.leanback.leanbackshowcase.app.room.di.scope.PerFragment;
+
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
 
@@ -30,7 +30,7 @@ import dagger.android.ContributesAndroidInjector;
  */
 @Module
 public abstract class SearchFragmentInjectorInstallmentFactoryBindingModule {
-  @PerFragment
-  @ContributesAndroidInjector(modules = SearchFragmentUIModule.class)
-  abstract SearchFragment contributeSearchFragment();
+    @PerFragment
+    @ContributesAndroidInjector(modules = SearchFragmentUIModule.class)
+    abstract SearchFragment contributeSearchFragment();
 }

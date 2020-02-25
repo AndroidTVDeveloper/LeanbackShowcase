@@ -28,13 +28,14 @@ import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
-import androidx.annotation.Nullable;
-import androidx.leanback.leanbackshowcase.R;
 import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.util.Log;
 import android.view.KeyEvent;
+
+import androidx.annotation.Nullable;
+import androidx.leanback.leanbackshowcase.R;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -48,39 +49,41 @@ import java.util.List;
  */
 public class MusicPlaybackService extends Service {
 
-    // The ID used for for the notification. This is purely for making the service run as a
-    // foreground service
-    final int NOTIFICATION_ID = 1;
-    Notification.Builder mNotificationBuilder = null;
-
     public static final int MEDIA_ACTION_NO_REPEAT = 0;
     public static final int MEDIA_ACTION_REPEAT_ONE = 1;
     public static final int MEDIA_ACTION_REPEAT_ALL = 2;
-
-    private AudioManager mAudioManager;
-    private int mRepeatState = MEDIA_ACTION_NO_REPEAT;
-
-    private MediaPlayer mPlayer;
-    // MediaSession created for communication between NowPlayingCard in the launcher and the current MediaPlayer state
-    private MediaSessionCompat mMediaSession;
-
     private static final String TAG = "MusicPlaybackService";
+    private static final int FOCUS_CHANGE = 2;
+    // The ID used for for the notification. This is purely for making the service run as a
+    // foreground service
+    final int NOTIFICATION_ID = 1;
+    // Binder given to clients of this service
+    private final IBinder mBinder = new LocalBinder();
+    Notification.Builder mNotificationBuilder = null;
     int mCurrentMediaPosition = -1;
     int mCurrentMediaState = -1;
     MediaMetaData mCurrentMediaItem;
     List<MediaMetaData> mMediaItemList = new ArrayList<>();
+    private AudioManager mAudioManager;
+    private int mRepeatState = MEDIA_ACTION_NO_REPEAT;
+    private MediaPlayer mPlayer;
+    // MediaSession created for communication between NowPlayingCard in the launcher and the current MediaPlayer state
+    private MediaSessionCompat mMediaSession;
     private boolean mInitialized = false; // true when the MediaPlayer is prepared/initialized
-
-    private static final int FOCUS_CHANGE = 2;
-
-
+    private AudioManager.OnAudioFocusChangeListener mOnAudioFocusChangeListener = new
+            AudioManager.OnAudioFocusChangeListener() {
+                @Override
+                public void onAudioFocusChange(int focusChange) {
+                    mMediaPlayerHandler.obtainMessage(FOCUS_CHANGE, focusChange, 0).sendToTarget();
+                }
+            };
+    private List<ServiceCallback> mServiceCallbacks = new ArrayList<>();
     private Handler mMediaPlayerHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case FOCUS_CHANGE:
-                    switch (msg.arg1)
-                    {
+                    switch (msg.arg1) {
                         case AudioManager.AUDIOFOCUS_LOSS:
                             if (mAudioManager.abandonAudioFocus(mOnAudioFocusChangeListener) !=
                                     AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
@@ -103,21 +106,6 @@ public class MusicPlaybackService extends Service {
             }
         }
     };
-
-    private AudioManager.OnAudioFocusChangeListener mOnAudioFocusChangeListener = new
-            AudioManager.OnAudioFocusChangeListener() {
-        @Override
-        public void onAudioFocusChange(int focusChange) {
-            mMediaPlayerHandler.obtainMessage(FOCUS_CHANGE, focusChange, 0).sendToTarget();
-        }
-    };
-
-    public interface ServiceCallback {
-        void onMediaStateChanged(int currentMediaState);
-        void onCurrentItemChanged(MediaMetaData currentMediaItem);
-    }
-
-    private List<ServiceCallback> mServiceCallbacks = new ArrayList<>();
 
     public void registerServiceCallback(ServiceCallback serviceCallback) {
         if (serviceCallback == null) {
@@ -155,24 +143,15 @@ public class MusicPlaybackService extends Service {
 
     private void notifyMediaStateChanged(int currentMediaState) {
         mCurrentMediaState = currentMediaState;
-        for(int i = mServiceCallbacks.size() - 1; i >= 0; i--) {
+        for (int i = mServiceCallbacks.size() - 1; i >= 0; i--) {
             mServiceCallbacks.get(i).onMediaStateChanged(currentMediaState);
         }
     }
 
     private void notifyMediaItemChanged(MediaMetaData currentMediaItem) {
         mCurrentMediaItem = currentMediaItem;
-        for(int i = mServiceCallbacks.size() - 1; i >= 0; i--) {
+        for (int i = mServiceCallbacks.size() - 1; i >= 0; i--) {
             mServiceCallbacks.get(i).onCurrentItemChanged(mCurrentMediaItem);
-        }
-    }
-
-    // Binder given to clients of this service
-    private final IBinder mBinder = new LocalBinder();
-
-    public class LocalBinder extends Binder {
-        MusicPlaybackService getService() {
-            return MusicPlaybackService.this;
         }
     }
 
@@ -206,12 +185,12 @@ public class MusicPlaybackService extends Service {
 
     }
 
-    public void setRepeatState(int repeatState) {
-        mRepeatState = repeatState;
-    }
-
     public int getRepeatState() {
         return mRepeatState;
+    }
+
+    public void setRepeatState(int repeatState) {
+        mRepeatState = repeatState;
     }
 
     public void playMediaItem(MediaMetaData mediaItemToPlay) {
@@ -248,7 +227,7 @@ public class MusicPlaybackService extends Service {
     }
 
     int findMediaItemPosition(MediaMetaData mediaItem) {
-        for(int i = 0; i < mMediaItemList.size(); i++) {
+        for (int i = 0; i < mMediaItemList.size(); i++) {
             if (mMediaItemList.get(i).getMediaSourceUri().equals(mediaItem.getMediaSourceUri())) {
                 return i;
             }
@@ -266,7 +245,8 @@ public class MusicPlaybackService extends Service {
         }
         mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         mPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            @Override public void onPrepared(MediaPlayer mp) {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
                 updateMediaSessionMetaData();
                 mInitialized = true;
                 play();
@@ -281,7 +261,8 @@ public class MusicPlaybackService extends Service {
         });
 
         mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override public void onCompletion(MediaPlayer mp) {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
                 updateMediaSessionPlayState();
                 if (mRepeatState == MEDIA_ACTION_REPEAT_ALL &&
                         mCurrentMediaPosition == mMediaItemList.size() - 1) {
@@ -402,7 +383,7 @@ public class MusicPlaybackService extends Service {
      * pauses playback (call play() to resume)
      */
     public void pause() {
-        if (mPlayer != null && mPlayer.isPlaying()){
+        if (mPlayer != null && mPlayer.isPlaying()) {
             mPlayer.pause();
             updateMediaSessionPlayState();
             notifyMediaStateChanged(MediaUtils.MEDIA_STATE_PAUSED);
@@ -474,6 +455,7 @@ public class MusicPlaybackService extends Service {
 
     /**
      * Seeks to the given new position in milliseconds of the current media item
+     *
      * @param newPosition The new position of the current media item in milliseconds
      */
     public void seekTo(int newPosition) {
@@ -528,6 +510,18 @@ public class MusicPlaybackService extends Service {
         return mBinder;
     }
 
+    public interface ServiceCallback {
+        void onMediaStateChanged(int currentMediaState);
+
+        void onCurrentItemChanged(MediaMetaData currentMediaItem);
+    }
+
+    public class LocalBinder extends Binder {
+        MusicPlaybackService getService() {
+            return MusicPlaybackService.this;
+        }
+    }
+
     private class MediaSessionCallback extends MediaSessionCompat.Callback {
 
         @Override
@@ -574,7 +568,7 @@ public class MusicPlaybackService extends Service {
 
         @Override
         public void onSeekTo(long pos) {
-            seekTo((int)pos);
+            seekTo((int) pos);
         }
     }
 }

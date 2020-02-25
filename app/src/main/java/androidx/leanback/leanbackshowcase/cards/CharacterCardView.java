@@ -17,15 +17,16 @@ package androidx.leanback.leanbackshowcase.cards;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import androidx.leanback.leanbackshowcase.R;
-import androidx.leanback.leanbackshowcase.models.Card;
-import androidx.leanback.widget.BaseCardView;
-import androidx.core.graphics.drawable.RoundedBitmapDrawable;
-import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.core.graphics.drawable.RoundedBitmapDrawable;
+import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
+import androidx.leanback.leanbackshowcase.R;
+import androidx.leanback.leanbackshowcase.models.Card;
+import androidx.leanback.widget.BaseCardView;
 
 public class CharacterCardView extends BaseCardView {
 

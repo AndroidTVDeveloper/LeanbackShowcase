@@ -16,14 +16,21 @@
 
 package androidx.leanback.leanbackshowcase.app.room.ui;
 
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
+import android.util.Log;
+import android.view.ContextThemeWrapper;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
+
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.PopupMenu;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentActivity;
 import androidx.leanback.leanbackshowcase.R;
 import androidx.leanback.leanbackshowcase.app.room.config.AppConfiguration;
 import androidx.leanback.leanbackshowcase.app.room.db.entity.VideoEntity;
@@ -33,20 +40,15 @@ import androidx.leanback.leanbackshowcase.app.room.network.PermissionLiveData;
 import androidx.leanback.leanbackshowcase.app.room.viewmodel.VideosViewModel;
 import androidx.leanback.widget.ImageCardView;
 import androidx.leanback.widget.Presenter;
-import androidx.fragment.app.FragmentActivity;
-import androidx.core.content.ContextCompat;
-import androidx.appcompat.widget.PopupMenu;
-import android.util.Log;
-import android.view.ContextThemeWrapper;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
 import java.io.File;
+
 import javax.inject.Inject;
 
 /**
@@ -57,7 +59,7 @@ public class VideoCardPresenter extends Presenter {
 
     // For debugging purpose
     private static final boolean DEBUG = true;
-    private static final String TAG =  "VideoCardPresenter";
+    private static final String TAG = "VideoCardPresenter";
 
     // String constant
     private static final String VIDEO = "video";

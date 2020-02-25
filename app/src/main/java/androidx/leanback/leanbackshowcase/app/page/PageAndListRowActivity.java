@@ -16,6 +16,7 @@ package androidx.leanback.leanbackshowcase.app.page;
 
 import android.app.Activity;
 import android.os.Bundle;
+
 import androidx.leanback.leanbackshowcase.R;
 
 /**

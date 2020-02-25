@@ -17,19 +17,22 @@ package androidx.leanback.leanbackshowcase.app.media;
 
 import android.app.Activity;
 import android.os.Handler;
+import android.widget.Toast;
+
 import androidx.leanback.media.PlaybackTransportControlGlue;
 import androidx.leanback.media.PlayerAdapter;
 import androidx.leanback.widget.Action;
 import androidx.leanback.widget.ArrayObjectAdapter;
 import androidx.leanback.widget.PlaybackControlsRow;
-import android.widget.Toast;
 
 /**
  * PlayerGlue for video playback
+ *
  * @param <T>
  */
 public class VideoMediaPlayerGlue<T extends PlayerAdapter> extends PlaybackTransportControlGlue<T> {
 
+    Handler mHandler = new Handler();
     private PlaybackControlsRow.RepeatAction mRepeatAction;
     private PlaybackControlsRow.ThumbsUpAction mThumbsUpAction;
     private PlaybackControlsRow.ThumbsDownAction mThumbsDownAction;
@@ -118,8 +121,6 @@ public class VideoMediaPlayerGlue<T extends PlayerAdapter> extends PlaybackTrans
         }
         return (ArrayObjectAdapter) getControlsRow().getSecondaryActionsAdapter();
     }
-
-    Handler mHandler = new Handler();
 
     @Override
     protected void onPlayCompleted() {

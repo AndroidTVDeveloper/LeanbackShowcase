@@ -18,24 +18,22 @@ package androidx.leanback.leanbackshowcase.app.media;
 
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
-import androidx.leanback.widget.PlaybackSeekDataProvider;
-import androidx.collection.LruCache;
 import android.util.Log;
 import android.util.SparseArray;
+
+import androidx.collection.LruCache;
+import androidx.leanback.widget.PlaybackSeekDataProvider;
 
 import java.util.Iterator;
 import java.util.Map;
 
 /**
- *
  * Base class that implements PlaybackSeekDataProvider using AsyncTask.THREAD_POOL_EXECUTOR with
  * prefetching.
  */
 public abstract class PlaybackSeekAsyncDataProvider extends PlaybackSeekDataProvider {
 
     static final String TAG = "SeekAsyncProvider";
-
-    long[] mSeekPositions;
     // mCache is for the bitmap requested by user
     final LruCache<Integer, Bitmap> mCache;
     // mPrefetchCache is for the bitmap not requested by user but prefetched by heuristic
@@ -43,43 +41,8 @@ public abstract class PlaybackSeekAsyncDataProvider extends PlaybackSeekDataProv
     // prefeteched items.
     final LruCache<Integer, Bitmap> mPrefetchCache;
     final SparseArray<LoadBitmapTask> mRequests = new SparseArray<>();
+    long[] mSeekPositions;
     int mLastRequestedIndex = -1;
-
-    protected boolean isCancelled(Object task) {
-        return ((AsyncTask) task).isCancelled();
-    }
-
-    protected abstract Bitmap doInBackground(Object task, int index, long position);
-
-    class LoadBitmapTask extends AsyncTask<Object, Object, Bitmap> {
-
-        int mIndex;
-        ResultCallback mResultCallback;
-
-        LoadBitmapTask(int index, ResultCallback callback) {
-            mIndex = index;
-            mResultCallback = callback;
-        }
-
-        @Override
-        protected Bitmap doInBackground(Object[] params) {
-            return PlaybackSeekAsyncDataProvider.this
-                    .doInBackground(this, mIndex, mSeekPositions[mIndex]);
-        }
-
-        @Override
-        protected void onPostExecute(Bitmap bitmap) {
-            mRequests.remove(mIndex);
-            Log.d(TAG, "thumb Loaded " + mIndex);
-            if (mResultCallback != null) {
-                mCache.put(mIndex, bitmap);
-                mResultCallback.onThumbnailLoaded(bitmap, mIndex);
-            } else {
-                mPrefetchCache.put(mIndex, bitmap);
-            }
-        }
-
-    }
 
     public PlaybackSeekAsyncDataProvider() {
         this(16, 24);
@@ -90,13 +53,19 @@ public abstract class PlaybackSeekAsyncDataProvider extends PlaybackSeekDataProv
         mPrefetchCache = new LruCache<Integer, Bitmap>(prefetchCacheSize);
     }
 
-    public void setSeekPositions(long[] positions) {
-        mSeekPositions = positions;
+    protected boolean isCancelled(Object task) {
+        return ((AsyncTask) task).isCancelled();
     }
+
+    protected abstract Bitmap doInBackground(Object task, int index, long position);
 
     @Override
     public long[] getSeekPositions() {
         return mSeekPositions;
+    }
+
+    public void setSeekPositions(long[] positions) {
+        mSeekPositions = positions;
     }
 
     @Override
@@ -134,7 +103,7 @@ public abstract class PlaybackSeekAsyncDataProvider extends PlaybackSeekDataProv
 
     protected void prefetch(int hintIndex, boolean forward) {
         for (Iterator<Map.Entry<Integer, Bitmap>> it =
-                mPrefetchCache.snapshot().entrySet().iterator(); it.hasNext(); ) {
+             mPrefetchCache.snapshot().entrySet().iterator(); it.hasNext(); ) {
             Map.Entry<Integer, Bitmap> entry = it.next();
             if (forward ? entry.getKey() < hintIndex : entry.getKey() > hintIndex) {
                 mPrefetchCache.remove(entry.getKey());
@@ -143,7 +112,7 @@ public abstract class PlaybackSeekAsyncDataProvider extends PlaybackSeekDataProv
         int inc = forward ? 1 : -1;
         for (int i = hintIndex; (mRequests.size() + mPrefetchCache.size()
                 < mPrefetchCache.maxSize()) && (inc > 0 ? i < mSeekPositions.length : i >= 0);
-                i += inc) {
+             i += inc) {
             Integer key = i;
             if (mCache.get(key) == null && mPrefetchCache.get(key) == null) {
                 LoadBitmapTask task = mRequests.get(i);
@@ -177,7 +146,7 @@ public abstract class PlaybackSeekAsyncDataProvider extends PlaybackSeekDataProv
             b.append(",");
         }
         b.append("> Cache<");
-        for (Iterator<Integer> it = mCache.snapshot().keySet().iterator(); it.hasNext();) {
+        for (Iterator<Integer> it = mCache.snapshot().keySet().iterator(); it.hasNext(); ) {
             Integer key = it.next();
             if (mCache.get(key) != null) {
                 b.append(key);
@@ -186,7 +155,7 @@ public abstract class PlaybackSeekAsyncDataProvider extends PlaybackSeekDataProv
         }
         b.append(">");
         b.append("> PrefetchCache<");
-        for (Iterator<Integer> it = mPrefetchCache.snapshot().keySet().iterator(); it.hasNext();) {
+        for (Iterator<Integer> it = mPrefetchCache.snapshot().keySet().iterator(); it.hasNext(); ) {
             Integer key = it.next();
             if (mPrefetchCache.get(key) != null) {
                 b.append(key);
@@ -195,5 +164,35 @@ public abstract class PlaybackSeekAsyncDataProvider extends PlaybackSeekDataProv
         }
         b.append(">");
         return b.toString();
+    }
+
+    class LoadBitmapTask extends AsyncTask<Object, Object, Bitmap> {
+
+        int mIndex;
+        ResultCallback mResultCallback;
+
+        LoadBitmapTask(int index, ResultCallback callback) {
+            mIndex = index;
+            mResultCallback = callback;
+        }
+
+        @Override
+        protected Bitmap doInBackground(Object[] params) {
+            return PlaybackSeekAsyncDataProvider.this
+                    .doInBackground(this, mIndex, mSeekPositions[mIndex]);
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap bitmap) {
+            mRequests.remove(mIndex);
+            Log.d(TAG, "thumb Loaded " + mIndex);
+            if (mResultCallback != null) {
+                mCache.put(mIndex, bitmap);
+                mResultCallback.onThumbnailLoaded(bitmap, mIndex);
+            } else {
+                mPrefetchCache.put(mIndex, bitmap);
+            }
+        }
+
     }
 }

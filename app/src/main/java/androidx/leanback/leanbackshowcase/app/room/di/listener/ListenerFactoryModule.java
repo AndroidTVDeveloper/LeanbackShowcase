@@ -34,7 +34,7 @@ import dagger.Module;
 @Module
 public abstract class ListenerFactoryModule {
 
-  @PerFragment
-  @Binds
-  public abstract ListenerFactory bindListenerFactory(ListenerFactory module);
+    @PerFragment
+    @Binds
+    public abstract ListenerFactory bindListenerFactory(ListenerFactory module);
 }

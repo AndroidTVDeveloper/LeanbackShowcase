@@ -24,7 +24,8 @@ import androidx.leanback.leanbackshowcase.R;
  */
 public class CardExampleActivity extends Activity {
 
-    @Override public void onCreate(Bundle savedInstanceState) {
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cards_example);
     }

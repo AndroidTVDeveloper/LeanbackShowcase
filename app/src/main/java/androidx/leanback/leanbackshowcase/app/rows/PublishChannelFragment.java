@@ -21,13 +21,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.leanback.app.GuidedStepFragment;
 import androidx.leanback.leanbackshowcase.R;
 import androidx.leanback.widget.GuidanceStylist;
 import androidx.leanback.widget.GuidedAction;
-import android.util.Log;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -38,22 +39,24 @@ import java.util.List;
  * It extends the GuidedStepFragment to share the similar UI as GuidedStepFragment
  */
 public class PublishChannelFragment extends GuidedStepFragment {
-    /**
-     * Tracking the action which is currently selected by the user
-     */
-    private ChannelContents mSelectedChannelContents;
     private static final String TAG = "PublishChannelFragment";
     private static final boolean DEBUG = true;
-
     /**
      * Request code when add channel activity (UI) is started
      */
     private static final int ADD_CHANNEL_REQUEST = 1;
-
     /**
      * Bitmap which will be put at the front of each checkbox
      */
     private static final int OPTION_DRAWABLE = R.drawable.row_app_banner;
+    /**
+     * Tracking the action which is currently selected by the user
+     */
+    private ChannelContents mSelectedChannelContents;
+    /**
+     * The list of channel contents, obtained from ChannelContents class
+     */
+    private List<ChannelContents> mChannelContents;
 
     /**
      * Helper function to add non-checked Action to this fragment
@@ -127,11 +130,6 @@ public class PublishChannelFragment extends GuidedStepFragment {
             }
         }
     }
-
-    /**
-     * The list of channel contents, obtained from ChannelContents class
-     */
-    private List<ChannelContents> mChannelContents;
 
     @Override
     @NonNull

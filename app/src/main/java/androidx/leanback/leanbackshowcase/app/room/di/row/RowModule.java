@@ -25,6 +25,7 @@ import androidx.leanback.widget.ArrayObjectAdapter;
 import androidx.leanback.widget.DetailsOverviewRow;
 import androidx.leanback.widget.HeaderItem;
 import androidx.leanback.widget.ListRow;
+
 import dagger.Module;
 import dagger.Provides;
 
@@ -52,6 +53,6 @@ public class RowModule {
             @ListAdapterForRelatedRowQualifier ListAdapter<VideoEntity> relatedRowAdapter) {
 
         HeaderItem mRelatedRowHeaderItem = new HeaderItem(RELATED_ROW);
-        return new ListRow(mRelatedRowHeaderItem,relatedRowAdapter);
+        return new ListRow(mRelatedRowHeaderItem, relatedRowAdapter);
     }
 }

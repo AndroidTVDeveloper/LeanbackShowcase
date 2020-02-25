@@ -17,24 +17,26 @@
 package androidx.leanback.leanbackshowcase.app.room.di.subcomponentinjection;
 
 import android.app.Application;
+
+import javax.inject.Singleton;
+
 import dagger.BindsInstance;
 import dagger.Component;
-import javax.inject.Singleton;
 
 @Singleton
 @Component(modules = {ApplicationModule.class, SubComponentInstallmentModule.class})
 public interface ApplicationComponent {
-  // Since the application component is not our direct injector, we don't have to defien the
-  // provision method explicitly in this component.
+    // Since the application component is not our direct injector, we don't have to defien the
+    // provision method explicitly in this component.
 
-  @Component.Builder
-  interface Builder {
+    LiveDataDetailFragmentSubComponent.Builder presenterBuilder();
 
-    @BindsInstance
-    Builder application(Application application);
+    @Component.Builder
+    interface Builder {
 
-    ApplicationComponent build();
-  }
+        @BindsInstance
+        Builder application(Application application);
 
-  LiveDataDetailFragmentSubComponent.Builder presenterBuilder();
+        ApplicationComponent build();
+    }
 }
