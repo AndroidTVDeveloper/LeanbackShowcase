@@ -24,7 +24,7 @@ android {
     buildToolsVersion rootProject.buildToolsVersion
     defaultConfig {
         applicationId 'com.example.android.persistence'
-        minSdkVersion 21
+        minSdkVersion 28
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -85,15 +85,15 @@ dependencies {
     implementation 'androidx.leanback:leanback-preference:' + rootProject.supportLibVersion
     implementation 'androidx.legacy:legacy-preference-v14:' + rootProject.supportLibVersion
 
-    implementation "com.google.code.gson:gson:2.8.2"
+    implementation 'com.google.code.gson:gson:2.8.6'
     implementation "androidx.palette:palette:" + rootProject.supportLibVersion
     implementation 'com.google.android.exoplayer:exoplayer:r2.2.0'
 
     implementation 'com.github.bumptech.glide:glide:4.0.0-RC1'
     implementation 'androidx.tvprovider:tvprovider:' + rootProject.supportLibVersion
 
-    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
-    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.7.1'
+    implementation 'com.squareup.retrofit2:retrofit:2.7.1'
 
     implementation "com.google.dagger:dagger:" + rootProject.daggerVersion
     implementation "com.google.dagger:dagger-android:" + rootProject.daggerVersion
